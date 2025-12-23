@@ -1,0 +1,599 @@
+﻿<UserControl x:Class="DigitalProductionConfigEditor.Views.Step1_SelectNode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:DigitalProductionConfigEditor.Converters">
+    <UserControl.Resources>
+        <converters:XmlNodeToDisplayConverter x:Key="XmlNodeConverter"/>
+        <converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
+        <Style x:Key="PcbStatusTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding NewPcbFormatConfig, Converter={StaticResource NotNullToBoolConverter}}" Value="True">
+                    <Setter Property="Foreground" Value="Blue"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT PANEL: Master Template Nodes -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Step 1: Build Your Configuration" 
+                           FontWeight="Bold" FontSize="16" Margin="0,0,0,20"/>
+                
+                <!-- Production User Configs Section -->
+                <Border BorderBrush="Purple" 
+                        BorderThickness="2" 
+                        Background="Lavender" 
+                        Padding="15" 
+                        Margin="0,0,0,10" 
+                        CornerRadius="5">
+                    <StackPanel>
+                        <TextBlock Text="📋 Production User Configs" 
+                                   FontWeight="Bold" 
+                                   FontSize="14"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="Select configuration nodes to add to your new XML" 
+                                   FontSize="12"
+                                   Foreground="DarkSlateBlue"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="🔒 Safety: All packages will have enable=FALSE by default" 
+                                   FontSize="11"
+                                   Foreground="Green"
+                                   FontWeight="Bold"
+                                   Margin="0,5,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Bulk Selection Actions for Production Configs -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="☑ Select All" 
+                            Width="95" Height="26" 
+                            Background="LightBlue"
+                            Click="OnSelectAllConfigClick"
+                            Margin="0,0,5,0"
+                            ToolTip="Select all configuration nodes"/>
+                    <Button Content="☐ Deselect All" 
+                            Width="95" Height="26" 
+                            Background="LightGray"
+                            Click="OnDeselectAllConfigClick"
+                            Margin="0,0,10,0"
+                            ToolTip="Deselect all configuration nodes"/>
+                    <Button Content="➕ Add Selected" 
+                            Width="110" Height="26" 
+                            Background="LightGreen"
+                            FontWeight="SemiBold"
+                            Click="OnAddSelectedConfigClick"
+                            ToolTip="Add all selected configuration nodes to your XML"/>
+                </StackPanel>
+
+                <!-- Master Configuration Nodes List -->
+                <ItemsControl ItemsSource="{Binding MasterConfigNodeItems}" Margin="0,0,0,20">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" 
+                                    BorderThickness="1" 
+                                    Background="White" 
+                                    Padding="10" 
+                                    Margin="0,5,0,5" 
+                                    CornerRadius="3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Checkbox for selection -->
+                                    <CheckBox Grid.Column="0" 
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,10,0"
+                                              ToolTip="Select this configuration node"/>
+                                    
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding NodeName}" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="12"
+                                                   Margin="0,0,0,5"/>
+                                        <TextBlock FontSize="11" Foreground="Gray">
+                                            <Run Text="{Binding ItemCount, StringFormat='{}{0} items', Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <Button Grid.Column="2" 
+                                            Content="➕ Add" 
+                                            Padding="10,5"
+                                            MinWidth="75"
+                                            Width="75"
+                                            Background="LightGreen"
+                                            Tag="{Binding ConfigNode}"
+                                            Click="OnAddConfigurationClick"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Developer Validation Config Section -->
+                <Border BorderBrush="DarkOrange" 
+                        BorderThickness="2" 
+                        Background="PeachPuff" 
+                        Padding="15" 
+                        Margin="0,10,0,10" 
+                        CornerRadius="5">
+                    <StackPanel>
+                        <TextBlock Text="🔧 Developer Validation Config" 
+                                   FontWeight="Bold" 
+                                   FontSize="14"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="Developer validation and equipment checks" 
+                                   FontSize="12"
+                                   Foreground="DarkOrange"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Bulk Selection Actions for Developer Validation Configs -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="☑ Select All" 
+                            Width="95" Height="26" 
+                            Background="LightBlue"
+                            Click="OnSelectAllDevValidationClick"
+                            Margin="0,0,5,0"
+                            ToolTip="Select all developer validation nodes"/>
+                    <Button Content="☐ Deselect All" 
+                            Width="95" Height="26" 
+                            Background="LightGray"
+                            Click="OnDeselectAllDevValidationClick"
+                            Margin="0,0,10,0"
+                            ToolTip="Deselect all developer validation nodes"/>
+                    <Button Content="➕ Add Selected" 
+                            Width="110" Height="26" 
+                            Background="LightGreen"
+                            FontWeight="SemiBold"
+                            Click="OnAddSelectedDevValidationClick"
+                            ToolTip="Add all selected developer validation nodes to your XML"/>
+                </StackPanel>
+
+                <!-- Developer Validation Nodes List -->
+                <ItemsControl ItemsSource="{Binding MasterDevValidationNodeItems}" Margin="0,0,0,20">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" 
+                                    BorderThickness="1" 
+                                    Background="White" 
+                                    Padding="10" 
+                                    Margin="0,5,0,5" 
+                                    CornerRadius="3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Checkbox for selection -->
+                                    <CheckBox Grid.Column="0" 
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,10,0"
+                                              ToolTip="Select this developer validation node"/>
+                                    
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding NodeName}" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="12"
+                                                   Margin="0,0,0,5"/>
+                                        <TextBlock FontSize="11" Foreground="Gray">
+                                            <Run Text="{Binding ItemCount, StringFormat='{}{0} items', Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <Button Grid.Column="2" 
+                                            Content="➕ Add" 
+                                            Padding="10,5"
+                                            MinWidth="75"
+                                            Width="75"
+                                            Background="LightGreen"
+                                            Tag="{Binding ConfigNode}"
+                                            Click="OnAddDeveloperValidationClick"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- PCB Format Config Section -->
+                <Border BorderBrush="DarkBlue" 
+                        BorderThickness="2" 
+                        Background="LightBlue" 
+                        Padding="15" 
+                        Margin="0,10,0,10" 
+                        CornerRadius="5">
+                    <StackPanel>
+                        <TextBlock Text="🔲 PCB Format Config" 
+                                   FontWeight="Bold" 
+                                   FontSize="14"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="PCB panel and island configuration" 
+                                   FontSize="12"
+                                   Foreground="DarkBlue"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,8"/>
+                        <TextBlock Text="⚠️ Important: Add PCB Config ONCE, then Edit to add islands!" 
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   Foreground="Red"
+                                   TextWrapping="Wrap"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- PCB Format Config Item -->
+                <Border BorderBrush="Gray" 
+                        BorderThickness="1" 
+                        Background="White" 
+                        Padding="10" 
+                        Margin="0,5,0,20" 
+                        CornerRadius="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Checkbox (always unchecked for single item) -->
+                        <CheckBox Grid.Column="0" 
+                                  IsChecked="False"
+                                  IsEnabled="False"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,10,0"
+                                  ToolTip="PCB Format Config"/>
+                        
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="PCB Format Config" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="12"
+                                       Margin="0,0,0,5"/>
+                            <TextBlock FontSize="11" Foreground="Gray"
+                                       Text="1 items"/>
+                        </StackPanel>
+                        
+                        <Button Grid.Column="2" 
+                                Content="➕ Add" 
+                                Padding="10,5"
+                                MinWidth="75"
+                                Width="75"
+                                Background="LightGreen"
+                                Click="OnAddPcbFormatConfigClick"
+                                ToolTip="Add PCB Format Config ONCE. After adding, use the Edit button to manage islands."/>
+                    </Grid>
+                </Border>
+                
+                <!-- Advanced Settings Section -->
+                <Border BorderBrush="Purple" 
+                        BorderThickness="2" 
+                        Background="Lavender" 
+                        Padding="15" 
+                        Margin="0,10,0,10" 
+                        CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Header and List -->
+                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                            <TextBlock Text="⚙️ Advanced Settings" 
+                                       FontWeight="Bold" 
+                                       FontSize="14"
+                                       Margin="0,0,0,5"/>
+                        </StackPanel>
+                        
+                        <!-- Scrollable List -->
+                        <Border Grid.Row="1" Grid.Column="0"
+                                BorderBrush="DarkSlateBlue"
+                                BorderThickness="1"
+                                Background="White"
+                                CornerRadius="3"
+                                Margin="0,5,10,0"
+                                MaxHeight="120">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Disabled">
+                                <ItemsControl x:Name="AdvancedSettingsList" Padding="8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,3,0,3">
+                                                <TextBlock Text="!" 
+                                                           FontWeight="Bold"
+                                                           Foreground="Purple"
+                                                           Margin="0,0,8,0"
+                                                           ToolTip="Advanced configuration"/>
+                                                <TextBlock FontSize="12"
+                                                           Foreground="DarkSlateBlue"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           ToolTip="{Binding}">
+                                                    <TextBlock.Text>
+                                                        <Binding>
+                                                            <Binding.Converter>
+                                                                <converters:TruncateStringConverter MaxLength="35"/>
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+                        
+                        <!-- Open Button -->
+                        <Button Grid.Row="1" Grid.Column="1"
+                                Content="Open" 
+                                Padding="15,8"
+                                MinWidth="80"
+                                FontSize="13"
+                                FontWeight="SemiBold"
+                                Background="Plum"
+                                VerticalAlignment="Center"
+                                Click="OnAdvancedSettingsClick"
+                                Margin="0,5,0,0"
+                                ToolTip="Open Advanced Settings editor"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- RIGHT PANEL: Your New Configuration -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border BorderBrush="Green" 
+                        BorderThickness="2" 
+                        Background="Honeydew" 
+                        Padding="15" 
+                        Margin="0,41,0,10" 
+                        CornerRadius="5">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="📝 Your New Configuration" 
+                                           FontWeight="Bold" 
+                                           FontSize="14"
+                                           Margin="0,0,0,5"/>
+                                <TextBlock FontSize="12" Foreground="DarkGreen" TextWrapping="Wrap">
+                                    <Run Text="{Binding NewConfigurationNodes.Count, StringFormat='{}{0} production config(s)', Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!-- Create New Config Button (Visible only when Editing Master) -->
+                            <Button Grid.Column="1"
+                                    Content="➕ Create New" 
+                                    Padding="10,5"
+                                    Background="LightSkyBlue"
+                                    FontWeight="SemiBold"
+                                    Visibility="{Binding IsEditingMaster, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Click="OnCreateNewConfigClick"
+                                    ToolTip="Create a completely new configuration node (Edit Master Mode)"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Production User Configuration Nodes List -->
+                <TextBlock Text="Production User Configs:" 
+                           FontWeight="SemiBold" 
+                           FontSize="12" 
+                           Margin="0,10,0,5"/>
+                <ItemsControl ItemsSource="{Binding NewConfigurationNodes}" Margin="0,0,0,20">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Green" 
+                                    BorderThickness="1" 
+                                    Background="White" 
+                                    Padding="10" 
+                                    Margin="0,5,0,5" 
+                                    CornerRadius="3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding Name}" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="13"
+                                                   Margin="0,0,0,5"
+                                                   Foreground="DarkGreen"/>
+                                        <TextBlock FontSize="11" Foreground="Gray">
+                                            <Run Text="{Binding ChildNodes.Count, StringFormat='{}{0} items', Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <Button Grid.Column="1" 
+                                            Content="✏ Edit" 
+                                            Padding="10,5"
+                                            MinWidth="80"
+                                            Width="80"
+                                            Background="LightYellow"
+                                            Tag="{Binding}"
+                                            Click="OnEditConfigurationClick"/>
+                                    
+                                    <Button Grid.Column="3" 
+                                            Content="🗑 Delete" 
+                                            Padding="10,5"
+                                            MinWidth="80"
+                                            Width="80"
+                                            Background="LightCoral"
+                                            Tag="{Binding}"
+                                            Click="OnDeleteConfigurationClick"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Developer Validation Configuration Nodes List -->
+                <TextBlock Text="Developer Validation Configs:" 
+                           FontWeight="SemiBold" 
+                           FontSize="12" 
+                           Margin="0,10,0,5"/>
+                <ItemsControl ItemsSource="{Binding NewDeveloperValidationNodes}" Margin="0,0,0,20">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="DarkOrange" 
+                                    BorderThickness="1" 
+                                    Background="White" 
+                                    Padding="10" 
+                                    Margin="0,5,0,5" 
+                                    CornerRadius="3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding Name}" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="13"
+                                                   Margin="0,0,0,5"
+                                                   Foreground="DarkOrange"/>
+                                        <TextBlock FontSize="11" Foreground="Gray">
+                                            <Run Text="{Binding ChildNodes.Count, StringFormat='{}{0} items', Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <Button Grid.Column="1" 
+                                            Content="✏ Edit" 
+                                            Padding="10,5"
+                                            MinWidth="80"
+                                            Width="80"
+                                            Background="LightYellow"
+                                            Tag="{Binding}"
+                                            Click="OnEditDeveloperValidationClick"/>
+                                    
+                                    <Button Grid.Column="3" 
+                                            Content="🗑 Delete" 
+                                            Padding="10,5"
+                                            MinWidth="80"
+                                            Width="80"
+                                            Background="LightCoral"
+                                            Tag="{Binding}"
+                                            Click="OnDeleteDeveloperValidationClick"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- PCB Format Config Status -->
+                <TextBlock Text="PCB Format Config:" 
+                           FontWeight="SemiBold" 
+                           FontSize="12" 
+                           Margin="0,10,0,5"/>
+                
+                <!-- PCB Help Tip -->
+                <Border BorderBrush="Orange" 
+                        BorderThickness="2" 
+                        Background="LightYellow" 
+                        Padding="10" 
+                        Margin="0,5,0,10" 
+                        CornerRadius="3">
+                    <StackPanel>
+                        <TextBlock FontSize="11" 
+                                   FontWeight="Bold"
+                                   Foreground="DarkOrange"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,5">
+                            💡 PCB Quick Tip:
+                        </TextBlock>
+                        <TextBlock FontSize="10" 
+                                   Foreground="DarkOrange"
+                                   TextWrapping="Wrap">
+                            • Click ✏ Edit to add/modify islands (most common)
+                        </TextBlock>
+                        <TextBlock FontSize="10" 
+                                   Foreground="DarkOrange"
+                                   TextWrapping="Wrap">
+                            • Each product = Different island inside same PCB
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+                
+                <Border BorderBrush="DarkBlue" 
+                        BorderThickness="1" 
+                        Background="White" 
+                        Padding="10" 
+                        Margin="0,5,0,5" 
+                        CornerRadius="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0">
+                            <TextBlock FontWeight="SemiBold" 
+                                       FontSize="13"
+                                       Margin="0,0,0,5"
+                                       Foreground="DarkBlue">
+                                <Run Text="PcbFormatConfig"/>
+                            </TextBlock>
+                            <TextBlock FontSize="11" Style="{StaticResource PcbStatusTextStyle}">
+                                <Run Text="{Binding NewPcbFormatConfig, Converter={StaticResource XmlNodeConverter}, StringFormat='Status: {0}', Mode=OneWay}"/>
+                            </TextBlock>
+                        </StackPanel>
+                        
+                        <Button Grid.Column="1" 
+                                Content="✏ Edit" 
+                                Padding="10,5"
+                                MinWidth="80"
+                                Width="80"
+                                Background="LightYellow"
+                                Click="OnEditPcbFormatConfigClick"
+                                ToolTip="Click here to add/edit islands. Each island = one product variant."/>
+                        
+                        <Button Grid.Column="3" 
+                                Content="🗑 Delete" 
+                                Padding="10,5"
+                                MinWidth="80"
+                                Width="80"
+                                Background="LightCoral"
+                                Click="OnDeletePcbFormatConfigClick"
+                                ToolTip="Remove entire PCB Format Config section"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

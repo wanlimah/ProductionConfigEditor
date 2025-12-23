@@ -1,0 +1,88 @@
+﻿<Window x:Class="CalibrationLogConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Calibration Log Converter - Email Support" Height="600" Width="1000">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Calibration Log File Converter" 
+                   FontSize="24" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- Input Section -->
+        <GroupBox Grid.Row="1" Header="Input Files" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Grid.Column="0" Name="InputFilesTextBox" 
+                        IsReadOnly="True" TextWrapping="Wrap" 
+                        MinHeight="60" Margin="5"/>
+                <Button Grid.Column="1" Content="Browse..." Name="BrowseButton" 
+                       Click="BrowseButton_Click" Width="100" Margin="5"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Options -->
+        <GroupBox Grid.Row="2" Header="Export Options" Margin="0,0,0,10">
+            <StackPanel>
+                <CheckBox Name="IncludeExtendedFieldsCheckBox" 
+                         Content="Include extended fields (Calibration Date, Status, Location, etc.)" 
+                         IsChecked="True" Margin="5"/>
+                <CheckBox Name="AutoOpenCheckBox" 
+                         Content="Automatically open Excel file after export" 
+                         IsChecked="True" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Preview Grid -->
+        <GroupBox Grid.Row="3" Header="Preview" Margin="0,0,0,10">
+            <DataGrid Name="PreviewDataGrid" 
+                     AutoGenerateColumns="False"
+                     IsReadOnly="True"
+                     CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="200"/>
+                    <DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}" Width="200"/>
+                    <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat='yyyy-MM-dd'}" Width="150"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <!-- Status and Buttons -->
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Status Bar -->
+            <Border Grid.Row="0" Background="LightGray" Padding="10" Margin="0,0,0,10">
+                <Grid>
+                    <TextBlock Name="StatusTextBlock" Text="Ready" Foreground="Green" FontWeight="Bold"/>
+                    <TextBlock Name="RecordCountTextBlock" Text="0 records" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+            
+            <!-- Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Name="ParseButton" Content="Parse Files" Width="120" Height="35" 
+                       Click="ParseButton_Click" Margin="5"/>
+                <Button Name="ExportButton" Content="Export to Excel" Width="120" Height="35" 
+                       Click="ExportButton_Click" IsEnabled="False" Margin="5"/>
+                <Button Name="ClearButton" Content="Clear" Width="100" Height="35" 
+                       Click="ClearButton_Click" Margin="5"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

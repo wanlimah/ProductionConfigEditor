@@ -1,0 +1,249 @@
+================================================================================
+                        DATA SOURCE INFORMATION
+                          October 31, 2025
+================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ WHERE IS YOUR DATA COMING FROM?                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+PRIMARY DATA SOURCE:
+────────────────────
+Location: C:\Users\wanlimah\Documents\Raw_Data\
+File:     FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+Size:     58 KB (58,493 bytes)
+Modified: October 29, 2025 1:07 PM
+
+This is the Excel file that the application reads to extract calibration data.
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ HOW THE APPLICATION FINDS YOUR DATA                                          │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Step 1: Application Starts
+───────────────────────────
+The application looks for: C:\Users\wanlimah\Documents\Raw_Data\
+
+Step 2: Scan for Excel Files
+─────────────────────────────
+Searches for files with extensions:
+- .xlsx (Excel 2007+)
+- .xls  (Excel 97-2003)
+- .xlsb (Excel Binary)
+
+Step 3: File Detection
+───────────────────────
+Found: FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+
+Step 4: Parser Selection
+─────────────────────────
+BroadcomParser checks if it can parse the file by looking for:
+- "broadcom" in filename ✅
+- "fm-002" in filename ✅
+- "logsheet" in filename
+
+Result: BroadcomParser selected ✅
+
+Step 5: Worksheet Selection
+────────────────────────────
+BroadcomParser looks for worksheet named "Logsheet" (case-insensitive)
+If found: Processes that worksheet only
+If not found: Processes all worksheets
+
+Step 6: Data Extraction
+────────────────────────
+Parser reads all rows from the worksheet and extracts:
+- Model Number
+- Serial Number
+- Calibration Date
+- Calibration Interval (months)
+- Calculates: Due Date = Calibration Date + Interval
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ YOUR EXCEL FILE STRUCTURE                                                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+File: FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+
+Expected Worksheets:
+────────────────────
+The parser looks for a worksheet named "Logsheet" specifically.
+This worksheet should contain columns like:
+- Model Number (or Model, Equipment, Instrument, Device)
+- Serial Number (or Serial, S/N, SN)
+- Date dd-mm-yy (Calibration Date)
+- Cat Int month (Calibration Interval in months)
+
+Expected Data Format:
+─────────────────────
+Row 1: Headers (Model Number, Serial Number, Date dd-mm-yy, Cat Int month, ...)
+Row 2: Data row 1
+Row 3: Data row 2
+...
+Row N: Data row N-1
+
+Total Rows: Unknown (this is what we're trying to determine)
+Total Records: You mentioned 183, but should be more
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ WHY ONLY 183 RECORDS?                                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+BEFORE THE FIX:
+───────────────
+The parser was using ExcelDataReader with UseHeaderRow=true, which was
+limiting the number of rows read to approximately 183, even if your Excel
+file contains more rows.
+
+AFTER THE FIX:
+──────────────
+The parser now uses UseHeaderRow=false and reads ALL rows manually.
+This should give you the complete dataset.
+
+POSSIBLE REASONS IF STILL 183:
+───────────────────────────────
+
+1. Excel File Actually Has Only 183 Data Rows
+   → Open the file and check: How many rows after the header?
+   → Look for the "Logsheet" worksheet specifically
+
+2. Many Rows Are Being Skipped
+   → Rows with both Model AND Serial Number empty are skipped
+   → Rows with "X" markers are skipped
+   → Completely empty rows are skipped
+
+3. Reading Wrong Worksheet
+   → If there's no "Logsheet" worksheet, it processes ALL worksheets
+   → Check worksheet names in your Excel file
+
+4. Old Executable Still Running
+   → Make sure you close all instances of the application
+   → Run the NEW executable from: bin\Release\net8.0-windows\
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ HOW TO CHECK YOUR EXCEL FILE                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Manual Check:
+─────────────
+1. Open: C:\Users\wanlimah\Documents\Raw_Data\FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+2. Look for worksheet named "Logsheet"
+3. Count the total number of rows (including header)
+4. Check if there are empty rows or rows with "X" markers
+5. Verify columns exist: Model Number, Serial Number, Date, Cat Int month
+
+Expected Result:
+────────────────
+If you see 184 rows total (1 header + 183 data rows) → File has exactly 183 records
+If you see 500 rows total (1 header + 499 data rows) → File has 499 records
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ DATA FLOW DIAGRAM                                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+[Excel File: FM-002_Field Calibration Daily Report (Broadcom PG).xlsx]
+                              ↓
+                    [Worksheet: "Logsheet"]
+                              ↓
+            [ExcelDataReader reads ALL rows]
+                              ↓
+              [BroadcomParser processes rows]
+                              ↓
+        [Skip: Empty rows, "X" markers, invalid data]
+                              ↓
+            [Extract: Model, Serial, Due Date]
+                              ↓
+              [Create CalibrationRecord list]
+                              ↓
+                  [Display in application]
+                              ↓
+            [User clicks "Export to Excel"]
+                              ↓
+              [ExcelExportService exports]
+                              ↓
+                 [Column A: Empty (for custom use)]
+                 [Column B: Model]
+                 [Column C: Serial Number]
+                 [Column D: Due Date]
+                              ↓
+            [Output: Calibration_Report_YYYYMMDD_HHMMSS.xlsx]
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ VERIFICATION STEPS                                                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Step 1: Check Source File
+─────────────────────────
+□ Open FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+□ Verify worksheet name is "Logsheet" (or note the actual name)
+□ Count total data rows manually
+□ Note any empty rows or special markers
+
+Step 2: Run Application
+────────────────────────
+□ Close any running instances
+□ Run: RUN_APP.bat
+□ Click "Parse Files"
+□ Look at status message: "Parsed X file(s), found Y records"
+□ Look at bottom of window: "Y records"
+
+Step 3: Compare Numbers
+────────────────────────
+□ Manual count from Excel: _____ rows
+□ Application shows: _____ records
+□ Difference: _____ (these are skipped rows)
+
+Step 4: Export and Verify
+──────────────────────────
+□ Click "Export to Excel"
+□ Open exported file
+□ Count rows (should match application count)
+□ Verify data completeness
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ NEXT STEPS                                                                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+To understand why you're getting exactly 183 records:
+
+1. Manually open and count rows in the source Excel file
+2. Run the updated application
+3. Compare the counts
+4. If still limited to 183, check:
+   - Are you running the NEW executable?
+   - Does the Excel file actually have more than 183 rows?
+   - Are many rows being skipped (empty/invalid)?
+
+================================================================================
+FILE LOCATIONS REFERENCE
+================================================================================
+
+Source Data:
+------------
+C:\Users\wanlimah\Documents\Raw_Data\FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+
+Application:
+------------
+C:\Users\wanlimah\DigitalProductionConfigEditor\CalibrationLogConverter\CalibrationLogConverter\bin\Release\net8.0-windows\CalibrationLogConverter.exe
+
+Exported Files (Examples):
+---------------------------
+C:\Users\wanlimah\Documents\Raw_Data\Calibration_Report_20251031_*.xlsx
+
+Modified Code:
+--------------
+C:\Users\wanlimah\DigitalProductionConfigEditor\CalibrationLogConverter\CalibrationLogConverter\Parsers\BroadcomParser.cs
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,138 @@
+════════════════════════════════════════════════════════════════
+           🔒 MASTER XML PROTECTION FEATURES
+════════════════════════════════════════════════════════════════
+
+IMPLEMENTED PROTECTIONS:
+───────────────────────────────────────────────────────────────
+
+✅ 1. READ-ONLY FILE ATTRIBUTE
+   - App automatically sets Master XML to read-only when loaded
+   - Prevents accidental modification through File Explorer
+   - Windows enforces read-only at OS level
+
+✅ 2. FILE INTEGRITY VERIFICATION (SHA-256)
+   - App calculates hash when Master XML is loaded
+   - Detects if file was modified externally (even with Notepad!)
+   - Warns user if tampering detected
+   - Offers to reload or restore from backup
+
+✅ 3. BACKUP COPY INCLUDED
+   - Distribution packages include:
+     * Master_Digital_ProductionUserConfig.xml (main)
+     * Master_Digital_ProductionUserConfig.BACKUP.xml (backup)
+   - If main file gets corrupted, users can restore from backup
+
+✅ 4. APP-LEVEL PROTECTION
+   - Master XML is loaded as read-only in the app
+   - All edits are made to a NEW XML document
+   - Original template is never modified
+
+✅ 5. USER GUIDANCE
+   - README explains the Master XML protection
+   - Clear instructions on how to restore from backup
+   - Troubleshooting guide included
+
+════════════════════════════════════════════════════════════════
+
+HOW IT WORKS:
+───────────────────────────────────────────────────────────────
+
+When the app starts:
+  1. Loads Master_Digital_ProductionUserConfig.xml
+  2. Calculates SHA-256 hash of the file
+  3. Automatically sets file to READ-ONLY
+  4. User works on a NEW XML document
+  5. Master template stays untouched
+
+When user adds configuration nodes:
+  1. App checks if Master XML hash changed
+  2. If changed → Shows warning popup
+  3. User can reload or restore from backup
+  4. If unchanged → Proceeds normally
+
+If user tries to edit Master XML externally:
+  ❌ Notepad/Editor: Can override read-only with prompt
+  ✅ App detects change via hash verification
+  ✅ Warns user and offers to restore
+
+If something goes wrong:
+  1. User deletes corrupted Master XML
+  2. Renames .BACKUP file to remove .BACKUP
+  3. App loads the restored file
+  4. Everything works again!
+
+════════════════════════════════════════════════════════════════
+
+WHAT USERS CANNOT DO:
+───────────────────────────────────────────────────────────────
+
+❌ Edit Master XML through the app (it's read-only)
+❌ Accidentally save over Master XML (wrong file type dialog)
+❌ Delete without knowing backup exists (documented in README)
+
+════════════════════════════════════════════════════════════════
+
+WHAT USERS CAN DO:
+───────────────────────────────────────────────────────────────
+
+✅ Load Master XML as template (read-only)
+✅ Create new XML documents from template
+✅ Save new XML to any location
+✅ Restore from backup if needed
+
+════════════════════════════════════════════════════════════════
+
+FILES IN DISTRIBUTION PACKAGE:
+───────────────────────────────────────────────────────────────
+
+📁 DigitalProductionConfigEditor_NET6/
+├── DigitalProductionConfigEditor.exe
+├── Master_Digital_ProductionUserConfig.xml  ← Main (read-only)
+├── Master_Digital_ProductionUserConfig.BACKUP.xml  ← Backup
+├── README.txt  ← Explains protection
+└── [other DLLs]
+
+📁 DigitalProductionConfigEditor_NET8/
+├── (same structure)
+
+════════════════════════════════════════════════════════════════
+
+CODE IMPLEMENTATION:
+───────────────────────────────────────────────────────────────
+
+Location: ViewModels\WizardViewModel.cs
+Method: LoadMasterXml()
+
+When Master XML is loaded:
+  - Sets file attribute to read-only
+  - Displays status: "loaded (read-only)"
+  - Continues even if can't set read-only
+
+Location: CREATE_DISTRIBUTION_PACKAGE.bat
+
+When building distribution:
+  - Copies Master XML to package
+  - Creates .BACKUP copy
+  - Sets read-only attribute with attrib +R
+  - Includes in both NET6 and NET8 packages
+
+════════════════════════════════════════════════════════════════
+
+BENEFITS:
+───────────────────────────────────────────────────────────────
+
+🛡️ Prevents accidental data loss
+💾 Always have a backup available
+👍 Easy to restore if needed
+📚 Clear documentation for users
+✅ No extra manual steps required
+
+════════════════════════════════════════════════════════════════
+
+This protection is automatically applied when you run:
+  CREATE_DISTRIBUTION_PACKAGE.bat
+
+No additional configuration needed!
+
+════════════════════════════════════════════════════════════════
+

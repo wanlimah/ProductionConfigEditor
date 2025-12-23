@@ -1,0 +1,97 @@
+<Window x:Class="DigitalProductionConfigEditor.Views.AddAttributeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Attribute" 
+        Width="450" Height="300"
+        WindowStartupLocation="CenterOwner"
+        Background="WhiteSmoke">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" 
+                   Text="Add New Attribute" 
+                   FontSize="14" FontWeight="Bold" 
+                   Margin="0,0,0,15"/>
+
+        <!-- Attribute Name -->
+        <Grid Grid.Row="1" Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" 
+                       Text="Attribute Name*:" 
+                       VerticalAlignment="Center"
+                       FontWeight="SemiBold"/>
+            <ComboBox Grid.Column="1" 
+                      x:Name="AttributeNameComboBox"
+                      IsEditable="True"
+                      ItemsSource="{Binding CommonAttributes}"
+                      ToolTip="Select or enter custom attribute name"/>
+        </Grid>
+
+        <!-- Attribute Value -->
+        <Grid Grid.Row="2" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" 
+                       Text="Attribute Value:" 
+                       VerticalAlignment="Center"
+                       FontWeight="SemiBold"/>
+            <TextBox Grid.Column="1" 
+                     x:Name="AttributeValueTextBox"
+                     ToolTip="Enter the attribute value"/>
+        </Grid>
+
+        <!-- Help Text -->
+        <Border Grid.Row="3" 
+                Background="LightYellow" 
+                BorderBrush="Orange" 
+                BorderThickness="1" 
+                Padding="10" 
+                Margin="0,10,0,10"
+                CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="💡 Common Attributes:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock TextWrapping="Wrap" FontSize="11">
+                    • enable: TRUE or FALSE<LineBreak/>
+                    • count: Number of items (e.g., 5, 10, 100)<LineBreak/>
+                    • sampling: Sampling interval (e.g., 5, 10)<LineBreak/>
+                    • threshold: Threshold value (e.g., 99, 95)<LineBreak/>
+                    • mode: AUTO, MANUAL, SWEEP, POINT<LineBreak/>
+                    • rule: DATETIME, REV<LineBreak/>
+                    • avg_channel: ALL, EACH<LineBreak/>
+                    • url: Web service URL<LineBreak/>
+                    • note: Description or note
+                </TextBlock>
+            </StackPanel>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="4" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button Content="Add" 
+                    Width="80" Height="30" 
+                    Background="LightGreen" 
+                    FontWeight="Bold"
+                    Click="Add_Click"
+                    Margin="0,0,10,0"/>
+            <Button Content="Cancel" 
+                    Width="80" Height="30"
+                    Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

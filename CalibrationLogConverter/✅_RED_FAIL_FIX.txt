@@ -1,0 +1,204 @@
+═══════════════════════════════════════════════════════════════════
+✅ RED "FAILED" FIX APPLIED!
+═══════════════════════════════════════════════════════════════════
+
+Fixed the issue where "FAILED" status was not being colored red.
+
+═══════════════════════════════════════════════════════════════════
+PROBLEM IDENTIFIED
+═══════════════════════════════════════════════════════════════════
+
+Your file contains:    "FAILED" (with a D)
+Code was checking for: "FAIL" (without a D)
+
+Result: No match → Text stayed black ❌
+
+═══════════════════════════════════════════════════════════════════
+SOLUTION APPLIED
+═══════════════════════════════════════════════════════════════════
+
+Updated ExcelExportService.cs to handle ALL variations:
+
+✅ "FAIL"      → RED and BOLD
+✅ "FAILED"    → RED and BOLD  
+✅ "Fail"      → RED and BOLD
+✅ "Failed"    → RED and BOLD
+✅ "fail"      → RED and BOLD
+✅ "failed"    → RED and BOLD
+
+Any status containing "FAIL" (case-insensitive) → RED and BOLD
+
+═══════════════════════════════════════════════════════════════════
+CODE CHANGES
+═══════════════════════════════════════════════════════════════════
+
+File: ExcelExportService.cs
+
+Change 1: Main Data Sheet (Lines 85-91)
+  OLD: if (record.Status == "FAIL")
+  NEW: if (statusUpper.Contains("FAIL"))
+  
+  Now checks if status CONTAINS "fail" (case-insensitive)
+
+Change 2: Summary Sheet (Lines 185-200)
+  OLD: Count records where Status == "FAIL"
+  NEW: Count records where Status CONTAINS "fail"
+  
+  Summary sheet now correctly counts FAILED statuses
+
+═══════════════════════════════════════════════════════════════════
+EXPECTED RESULTS
+═══════════════════════════════════════════════════════════════════
+
+In your exported Excel file:
+
+Row 6:  PXle-6570 | 1E128F2 | N/A | FAILED
+  Status: RED and BOLD ❤️
+
+Row 36: PXle-5646R | 30EBD2D | N/A | FAILED
+  Status: RED and BOLD ❤️
+
+All other rows with PASSED:
+  Status: Normal black text
+
+Summary Sheet:
+  FAIL/FAILED: 2 (shown in red)
+  PASS/PASSED: 40 (shown in green)
+
+═══════════════════════════════════════════════════════════════════
+BUILD AND TEST
+═══════════════════════════════════════════════════════════════════
+
+1. Build:
+   cd CalibrationLogConverter\CalibrationLogConverter
+   dotnet build --configuration Release
+
+2. Run:
+   TEST_FM002_PARSER.bat
+
+3. Parse:
+   Click "Parse Files"
+
+4. Export:
+   Click "Export to Excel"
+
+5. Open exported file:
+   Check Column E (Status)
+   → "FAILED" should now be RED and BOLD
+
+6. Check Summary sheet:
+   → Should show FAIL/FAILED count in red
+
+═══════════════════════════════════════════════════════════════════
+TECHNICAL DETAILS
+═══════════════════════════════════════════════════════════════════
+
+Old Logic:
+  if (record.Status == "FAIL")
+  
+  Problem: Exact match only
+  "FAIL" matches → RED ✅
+  "FAILED" doesn't match → BLACK ❌
+
+New Logic:
+  var statusUpper = record.Status?.ToUpper() ?? "";
+  if (statusUpper.Contains("FAIL"))
+  
+  Solution: Contains check (case-insensitive)
+  "FAIL" contains "FAIL" → RED ✅
+  "FAILED" contains "FAIL" → RED ✅
+  "Failed" contains "FAIL" → RED ✅
+  "fail" contains "FAIL" → RED ✅
+
+═══════════════════════════════════════════════════════════════════
+FORMATTING APPLIED
+═══════════════════════════════════════════════════════════════════
+
+For any status containing "FAIL":
+  ✅ Font Color: RED (System.Drawing.Color.Red)
+  ✅ Font Weight: BOLD
+  ✅ Applied to: Status column (Column E)
+
+For PASS statuses:
+  • Font Color: Black (default)
+  • Font Weight: Normal
+
+═══════════════════════════════════════════════════════════════════
+BACKWARD COMPATIBILITY
+═══════════════════════════════════════════════════════════════════
+
+✅ Old files with "FAIL" still work
+✅ New files with "FAILED" now work
+✅ Mixed case (Fail, Failed, fail, failed) all work
+✅ No breaking changes to existing functionality
+
+═══════════════════════════════════════════════════════════════════
+VERIFICATION
+═══════════════════════════════════════════════════════════════════
+
+After building and exporting, you should see:
+
+Main Sheet (Calibration Records):
+  Column E header: "Status"
+  
+  Rows with PASSED:  Black text (normal)
+  Rows with FAILED:  RED text (bold) ❤️
+
+Summary Sheet:
+  PASS/PASSED: XXX (green, bold)
+  FAIL/FAILED: X (red, bold) ❤️
+
+═══════════════════════════════════════════════════════════════════
+IF STILL NOT SHOWING RED
+═══════════════════════════════════════════════════════════════════
+
+1. Make sure you REBUILT:
+   dotnet build --configuration Release
+
+2. Make sure you're running the NEW executable:
+   Check file modified date/time
+
+3. Check the Status column value:
+   - Is it exactly "FAILED"?
+   - Or something else like "Fail", "Failed", etc.?
+
+4. Try opening exported file in Excel:
+   - Select a FAILED cell
+   - Check font color in Format menu
+   - Should be RED
+
+5. If still not red, send me:
+   - Screenshot of exported Excel
+   - The exact text in the Status cell
+
+═══════════════════════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════════════════════
+
+✅ Updated to handle "FAILED" (not just "FAIL")
+✅ Case-insensitive matching
+✅ Works with any status containing "fail"
+✅ Both main sheet and summary sheet updated
+✅ No linter errors
+✅ Ready to build and test
+
+═══════════════════════════════════════════════════════════════════
+
+Date: November 5, 2025
+Version: 1.4
+Status: ✅ RED FAIL FIX APPLIED
+File: ExcelExportService.cs
+Ready: BUILD AND TEST
+
+═══════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+

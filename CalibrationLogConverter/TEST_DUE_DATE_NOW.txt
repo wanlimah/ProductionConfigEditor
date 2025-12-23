@@ -1,0 +1,222 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║              🔍 DEBUG VERSION - TEST DUE DATE CALCULATION                    ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Date: November 5, 2025
+Purpose: Diagnose why Due Date column is not being calculated
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ CURRENT STATUS                                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+✅ Model Column: Working
+✅ Serial Number Column: Working
+❌ Due Date Column: Not showing calculated dates
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ HOW DUE DATE SHOULD WORK                                                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Formula:
+────────
+Due Date = Calibration Date (Column D) + Cat Int Month (Column I)
+
+Example:
+────────
+Column D: 22-Sep-2025 (Calibration Date)
+Column I: 12 (months)
+Result:   22-Sep-2026 (Due Date) ✅
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT'S NEW IN THIS VERSION                                                   ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Enhanced Debugging:
+───────────────────
+✅ Shows which columns were detected (Model, Serial, Cal Date, Cat Int)
+✅ Shows column index numbers
+✅ Shows row-by-row due date calculations
+✅ Automatic diagnostic popup if due dates not calculated
+✅ Lists ALL your column headers with index numbers
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ QUICK TEST STEPS                                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+1. RUN APPLICATION
+   ────────────────
+   Double-click: RUN_APP.bat
+
+2. LOAD YOUR FILE
+   ──────────────
+   File: Logsheet_Broadcom_Sep25_WanLing (version 1).xlsb
+
+3. CLICK "PARSE FILES"
+   ───────────────────
+   Wait for parsing to complete
+
+4. CHECK FOR POPUP
+   ───────────────
+   You'll see ONE of these:
+
+   ✅ SUCCESS - No popup (due dates calculated correctly)
+   ⚠️  POPUP - "DUE DATE CALCULATION ISSUE"
+
+5. IF YOU SEE THE POPUP
+   ────────────────────
+   → TAKE A SCREENSHOT! 📸
+   → Share it with me
+   → It shows your exact column headers and indices
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT THE POPUP WILL SHOW YOU                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Example Popup:
+──────────────
+┌──────────────────────────────────────────────────┐
+│ ⚠️ DUE DATE CALCULATION ISSUE                    │
+│                                                  │
+│ ✅ Records extracted: 28                         │
+│ ❌ Records with due dates: 0                     │
+│                                                  │
+│ COLUMN DETECTION:                                │
+│   Cal Date Column: ❌ NOT FOUND                  │
+│   Cat Int Column:  ❌ NOT FOUND                  │
+│                                                  │
+│ COLUMN HEADERS IN YOUR FILE:                     │
+│   [0] Work Order                                 │
+│   [1] Item                                       │
+│   [2] Model Number        ← Found ✅             │
+│   [3] Serial Number       ← Found ✅             │
+│   [4] Date (format?)      ← Should be Cal Date?  │
+│   [5] ...                                        │
+│   [8] Interval (months?)  ← Should be Cat Int?   │
+│   ...                                            │
+└──────────────────────────────────────────────────┘
+
+This tells me EXACTLY what your column headers are named!
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHY DUE DATE MIGHT NOT BE CALCULATED                                         ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Possible Reason 1: Column Header Name Mismatch
+───────────────────────────────────────────────
+Your column header might be named differently than expected.
+
+Expected Names for CALIBRATION DATE (Column D):
+   • "Date dd-mm-yy"
+   • "Date (dd-mm-yy)"
+   • "Date"
+   • "Calibration Date"
+   • "Cal Date"
+   • etc.
+
+Expected Names for CAT INT (Column I):
+   • "Cat Int Month"
+   • "Cat Int (Month)"
+   • "Interval"
+   • "Cal Interval"
+   • "Months"
+   • etc.
+
+→ The popup will show me your ACTUAL column names!
+
+Possible Reason 2: Column Data Format
+──────────────────────────────────────
+Even if headers are found:
+   • Date column might contain text instead of dates
+   • Cat Int column might contain text instead of numbers
+   • Values might be empty
+
+→ Debug output will show this too!
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT HAPPENS NEXT                                                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+After you run the test:
+
+Scenario A: No Popup (Success)
+───────────────────────────────
+   ✅ Due dates are being calculated correctly!
+   ✅ You can export and use the data
+   ✅ Problem solved!
+
+Scenario B: Popup Appears
+──────────────────────────
+   📸 TAKE A SCREENSHOT of the popup
+   📤 Share it with me
+   🔧 I'll update the parser to recognize your column names
+   🔄 Rebuild and test again
+   ✅ Problem solved!
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TECHNICAL DETAILS                                                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Modified File:
+   CalibrationLogConverter/Parsers/BroadcomParser.cs
+
+Changes Made:
+   1. Enhanced column detection display
+   2. Row-by-row due date calculation logging
+   3. Automatic diagnostic popup for due date issues
+   4. Shows exact column headers with indices
+   5. Explains why each calculation failed
+
+Build Status:
+   ✅ Build successful
+   ✅ 0 errors, 0 warnings
+   ✅ Ready to test
+
+Debug Features:
+   • Column detection results displayed
+   • Due date calculation traced for each row
+   • Automatic diagnosis when no due dates calculated
+   • Complete column header listing
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ IMPORTANT: SCREENSHOT EXAMPLE                                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+If you see the popup, take a screenshot showing:
+
+   ✅ The entire popup window
+   ✅ The "COLUMN DETECTION" section
+   ✅ The "COLUMN HEADERS IN YOUR FILE" list
+
+This gives me everything I need to:
+   • See your exact column names
+   • Know which columns are at which positions
+   • Update the parser to match your format
+   • Fix the due date calculation
+
+════════════════════════════════════════════════════════════════════════════════
+
+🎯 READY TO TEST!
+
+1. Run: RUN_APP.bat
+2. Load: Logsheet_Broadcom_Sep25_WanLing (version 1).xlsb
+3. Parse: Click "Parse Files"
+4. Check: Look for diagnostic popup
+5. Screenshot: If popup appears, capture it
+6. Share: Send me the screenshot
+
+════════════════════════════════════════════════════════════════════════════════
+
+For detailed information, see: DUE_DATE_DEBUG_VERSION.md
+
+════════════════════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+

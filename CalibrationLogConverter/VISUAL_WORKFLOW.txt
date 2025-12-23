@@ -1,0 +1,354 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║           📊 CALIBRATION LOG CONVERTER - VISUAL WORKFLOW                      ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  🔄 COMPLETE WORKFLOW FROM START TO FINISH
+═══════════════════════════════════════════════════════════════════════════════
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 1: VENDOR FILES                                                       │
+│  ═══════════════════                                                        │
+│                                                                             │
+│    📁 Raw_Data Folder                                                       │
+│    ┌──────────────────────────────────────────────┐                        │
+│    │  📄 FM-002_Field Calibration Daily Report    │ Vendor 1 (Broadcom)    │
+│    │  📄 Logsheet_Broadcom_Sep25_WanLing          │ Vendor 1 (Broadcom)    │
+│    │  📄 Vendor2_Calibration_Log.xlsx             │ Vendor 2 (Future)      │
+│    │  📄 Vendor3_Cal_Report.xlsx                  │ Vendor 3 (Future)      │
+│    └──────────────────────────────────────────────┘                        │
+│                                                                             │
+│    Each vendor has different formats:                                      │
+│    • Different column names                                                │
+│    • Different sheet structures                                            │
+│    • Different date formats                                                │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Place files here
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 2: LAUNCH APPLICATION                                                 │
+│  ═════════════════════════                                                  │
+│                                                                             │
+│    💻 Command Prompt                                                        │
+│    ┌────────────────────────────────────────────────────────┐             │
+│    │ > cd CalibrationLogConverter\CalibrationLogConverter   │             │
+│    │ > dotnet run                                           │             │
+│    │                                                        │             │
+│    │ Building...                                            │             │
+│    │ Starting application...                                │             │
+│    └────────────────────────────────────────────────────────┘             │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Application opens
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 3: MAIN APPLICATION WINDOW (Auto-Loads Files)                        │
+│  ═══════════════════════════════════════════════════                       │
+│                                                                             │
+│  ╔═══════════════════════════════════════════════════════════╗             │
+│  ║  📊 Calibration Log File Converter                       ║             │
+│  ║  Convert vendor calibration logs to standardized Excel   ║             │
+│  ╠═══════════════════════════════════════════════════════════╣             │
+│  ║                                                           ║             │
+│  ║  📂 Input Files                                          ║             │
+│  ║  ┌────────────────────────────────┐ [Browse...]          ║             │
+│  ║  │ ✅ FM-002_Field Calibration    │                      ║             │
+│  ║  │ ✅ Logsheet_Broadcom_Sep25     │  ← Auto-loaded!      ║             │
+│  ║  └────────────────────────────────┘                      ║             │
+│  ║                                                           ║             │
+│  ║  ⚙️ Export Options                                       ║             │
+│  ║  ☑ Include extended fields                               ║             │
+│  ║  ☑ Automatically open Excel file after export            ║             │
+│  ║                                                           ║             │
+│  ║  📋 Preview                                               ║             │
+│  ║  ┌─────────────────────────────────────────────────┐    ║             │
+│  ║  │ (Empty - click Parse Files to see data)         │    ║             │
+│  ║  └─────────────────────────────────────────────────┘    ║             │
+│  ║                                                           ║             │
+│  ║  Status: Found 2 Excel file(s) in Raw_Data folder        ║             │
+│  ║                                          0 records        ║             │
+│  ║                                                           ║             │
+│  ║  [🔄 Parse Files] [💾 Export...] [🗑️ Clear]             ║             │
+│  ╚═══════════════════════════════════════════════════════════╝             │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Click "Parse Files"
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 4: PARSING IN PROGRESS                                                │
+│  ═══════════════════════                                                    │
+│                                                                             │
+│    For each file:                                                           │
+│                                                                             │
+│    📄 FM-002_Field Calibration...                                          │
+│         │                                                                   │
+│         ├─► 🔍 Detect vendor (contains "fm-002") → BroadcomParser         │
+│         ├─► 📖 Open Excel file                                             │
+│         ├─► 🔎 Find columns:                                               │
+│         │      • Model ← "Equipment" or "Instrument"                       │
+│         │      • Serial Number ← "Serial" or "S/N"                         │
+│         │      • Due Date ← "Next Cal" or "Due Date"                       │
+│         ├─► 📊 Extract data row by row                                     │
+│         ├─► ✅ Filter empty rows                                            │
+│         └─► 💾 Store records                                               │
+│                                                                             │
+│    📄 Logsheet_Broadcom_Sep25...                                           │
+│         │                                                                   │
+│         ├─► 🔍 Detect vendor (contains "broadcom") → BroadcomParser       │
+│         ├─► 📖 Open Excel file                                             │
+│         └─► ... (same process)                                             │
+│                                                                             │
+│    ┌──────────────────────────────────────────────┐                       │
+│    │  ✅ Parsing Complete!                         │                       │
+│    │                                               │                       │
+│    │  ✅ Successfully parsed: 2 file(s)            │                       │
+│    │  📊 Total records extracted: 45               │                       │
+│    │                                               │                       │
+│    │              [ OK ]                           │                       │
+│    └──────────────────────────────────────────────┘                       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Records extracted
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 5: PREVIEW DATA                                                       │
+│  ═══════════════════                                                        │
+│                                                                             │
+│  ╔═══════════════════════════════════════════════════════════╗             │
+│  ║  📋 Preview                                               ║             │
+│  ║  ┌──────────────────────────────────────────────────────┐ ║             │
+│  ║  │ Model    │Serial │Due Date │Cal Date│Status│Vendor │ ║             │
+│  ║  │──────────│───────│─────────│────────│──────│───────│ ║             │
+│  ║  │Device-A  │SN1234 │2025-12  │2025-01 │Pass  │Broadco│ ║             │
+│  ║  │Device-B  │SN5678 │2025-11  │2025-02 │Pass  │Broadco│ ║             │
+│  ║  │Device-C  │SN9012 │2025-10  │2025-03 │Pass  │Broadco│ ║             │
+│  ║  │Device-D  │SN3456 │2025-09  │2025-04 │Pass  │Broadco│ ║             │
+│  ║  │...       │...    │...      │...     │...   │...    │ ║             │
+│  ║  └──────────────────────────────────────────────────────┘ ║             │
+│  ║                                                           ║             │
+│  ║  Status: Parsed 2 files, found 45 records                ║             │
+│  ║                                          45 records       ║             │
+│  ║                                                           ║             │
+│  ║  [🔄 Parse Files] [💾 Export to Excel] [🗑️ Clear]       ║             │
+│  ╚═══════════════════════════════════════════════════════════╝             │
+│                                                                             │
+│    ✅ Review the data                                                       │
+│    ✅ Check for missing dates                                               │
+│    ✅ Verify serial numbers                                                 │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Click "Export to Excel"
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 6: SAVE DIALOG                                                        │
+│  ══════════════════                                                         │
+│                                                                             │
+│    ┌──────────────────────────────────────────────────────┐               │
+│    │  Save As                                             │               │
+│    ├──────────────────────────────────────────────────────┤               │
+│    │  Location: 📁 Desktop                               │               │
+│    │                                                      │               │
+│    │  File name: Calibration_Report_20251030_150000.xlsx │               │
+│    │                                                      │               │
+│    │  Save as type: Excel Files (*.xlsx)                 │               │
+│    │                                                      │               │
+│    │                     [Save]  [Cancel]                 │               │
+│    └──────────────────────────────────────────────────────┘               │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Processing...
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 7: EXPORT PROCESSING                                                  │
+│  ════════════════════════                                                   │
+│                                                                             │
+│    📊 Creating Excel file...                                                │
+│         │                                                                   │
+│         ├─► 📄 Create "Calibration Records" sheet                          │
+│         │      ├─ Write headers (Model, Serial, Due Date, ...)            │
+│         │      ├─ Apply blue header styling                                │
+│         │      ├─ Write 45 data rows                                       │
+│         │      ├─ Format date columns (yyyy-MM-dd)                         │
+│         │      ├─ Auto-fit columns                                         │
+│         │      ├─ Add borders                                              │
+│         │      └─ Freeze header row                                        │
+│         │                                                                   │
+│         ├─► 📄 Create "Summary" sheet                                      │
+│         │      ├─ Total records: 45                                        │
+│         │      ├─ Export date: 2025-10-30 15:00:00                         │
+│         │      ├─ Records by vendor: Broadcom (45)                         │
+│         │      ├─ Records by file: (2 files listed)                        │
+│         │      ├─ Records with dates: 42                                   │
+│         │      ├─ Records without dates: 3                                 │
+│         │      ├─ Due within 30 days: 5 ⚠️ (RED)                           │
+│         │      └─ Overdue: 2 ⚠️ (DARK RED)                                  │
+│         │                                                                   │
+│         └─► 💾 Save file                                                   │
+│                                                                             │
+│    ┌──────────────────────────────────────────────────────┐               │
+│    │  ✅ Export Successful!                                │               │
+│    │                                                       │               │
+│    │  File saved to:                                       │               │
+│    │  C:\Users\...\Desktop\Calibration_Report_...xlsx     │               │
+│    │                                                       │               │
+│    │  Total records: 45                                    │               │
+│    │                                                       │               │
+│    │  Would you like to open the file now?                │               │
+│    │                                                       │               │
+│    │              [Yes]  [No]                              │               │
+│    └──────────────────────────────────────────────────────┘               │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        │ Click "Yes" or auto-open
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  STEP 8: FINAL OUTPUT (Excel Opens)                                         │
+│  ═════════════════════════════════                                          │
+│                                                                             │
+│  📊 Excel File: Calibration_Report_20251030_150000.xlsx                    │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────┐           │
+│  │ Microsoft Excel                                             │           │
+│  ├─────────────────────────────────────────────────────────────┤           │
+│  │ File  Home  Insert  [Calibration Records] [Summary] ◄─Tabs │           │
+│  ├─────────────────────────────────────────────────────────────┤           │
+│  │                                                             │           │
+│  │  ┌──────────────────────────────────────────────────────┐  │           │
+│  │  │ Model     │ Serial   │ Due Date   │ Cal Date │ ... │  │           │
+│  │  │──────────────────────────────────────────────────────│  │           │
+│  │  │ Device-A  │ SN1234   │ 2025-12-31 │ 2025-01  │ ... │  │           │
+│  │  │ Device-B  │ SN5678   │ 2025-11-30 │ 2025-02  │ ... │  │           │
+│  │  │ Device-C  │ SN9012   │ 2025-10-31 │ 2025-03  │ ... │  │           │
+│  │  │ ...       │ ...      │ ...        │ ...      │ ... │  │           │
+│  │  └──────────────────────────────────────────────────────┘  │           │
+│  │                                                             │           │
+│  │  ► Click "Summary" tab to see statistics ◄                 │           │
+│  │                                                             │           │
+│  └─────────────────────────────────────────────────────────────┘           │
+│                                                                             │
+│  ✅ STANDARDIZED FORMAT                                                     │
+│  ✅ PROFESSIONAL FORMATTING                                                 │
+│  ✅ SUMMARY WITH WARNINGS                                                   │
+│  ✅ READY TO USE                                                            │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  📋 DATA FLOW DIAGRAM
+═══════════════════════════════════════════════════════════════════════════════
+
+  Raw Files                    Parser                    Output
+  ─────────────               ────────                  ──────────
+  
+  📄 Vendor File 1  ──┐
+                       │
+  📄 Vendor File 2  ──┼──► 🔄 Smart Parser ──► 📊 Preview ──► 📁 Excel Report
+                       │      │                                    │
+  📄 Vendor File 3  ──┘      │                                    ├─ Sheet 1: Records
+                              │                                    └─ Sheet 2: Summary
+                              │
+                          Detects:
+                          • Vendor type
+                          • Column names
+                          • Date formats
+                          • Sheet structure
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  🔍 SMART COLUMN DETECTION
+═══════════════════════════════════════════════════════════════════════════════
+
+  Looking for "Model"?
+  ────────────────────
+  Searches for: "model", "equipment", "instrument", "device"
+  
+  Excel Column: "Equipment Name" ✅ MATCH → Maps to Model
+
+
+  Looking for "Serial Number"?
+  ─────────────────────────────
+  Searches for: "serial", "serial number", "s/n", "sn"
+  
+  Excel Column: "S/N" ✅ MATCH → Maps to Serial Number
+
+
+  Looking for "Due Date"?
+  ───────────────────────
+  Searches for: "due date", "next cal", "next calibration", "cal due"
+  
+  Excel Column: "Next Calibration" ✅ MATCH → Maps to Due Date
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  ⚡ QUICK COMMANDS
+═══════════════════════════════════════════════════════════════════════════════
+
+  Build:        cd CalibrationLogConverter\CalibrationLogConverter
+                dotnet build
+
+  Run:          dotnet run
+
+  Publish:      dotnet publish -c Release -r win-x64
+
+  Clean:        dotnet clean
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  📚 DOCUMENTATION NAVIGATION
+═══════════════════════════════════════════════════════════════════════════════
+
+  QUICK_START.txt              ← 2-minute guide (you are here)
+        ↓
+  USER_GUIDE.md                ← Complete user manual
+        ↓
+  README.md                    ← Technical documentation
+        ↓
+  IMPLEMENTATION_SUMMARY.md    ← Architecture details
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                         🎉 READY TO CONVERT! 🎉
+
+                    Run: dotnet run
+                    Then: Click "Parse Files"
+                    Finally: Click "Export to Excel"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

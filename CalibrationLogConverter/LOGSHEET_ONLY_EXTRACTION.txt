@@ -1,0 +1,184 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║              ✅ CONFIGURED: EXTRACT LOGSHEET ONLY                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ CONFIGURATION                                                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+The parser is now configured to:
+
+✅ ONLY extract data from "Logsheet" worksheet
+❌ IGNORE all other worksheets (including hidden ones like SDC)
+❌ IGNORE: How_to_fill, Revision History, On-site update template, etc.
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT TO EXPECT                                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+When you run the application:
+
+1. It will search for "Logsheet" worksheet in your Excel file
+2. Extract data ONLY from that worksheet
+3. Expected record count: ~28 records (from Logsheet only)
+4. All other worksheets will be ignored
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ EXPECTED RESULTS                                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+From your Excel file:
+────────────────────
+📄 FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+
+Worksheets (IGNORED):
+- ❌ How_to_fill (instruction sheet - SKIPPED)
+- ❌ Revision History (version history - SKIPPED)
+- ❌ On-site update template (template - SKIPPED)
+- ❌ Broadcom-Heng Sept 2025 (~24 rows - SKIPPED)
+- ❌ SDC (hidden, ~131 rows - SKIPPED)
+
+Worksheet (EXTRACTED):
+- ✅ Logsheet (~28 rows - EXTRACTED!)
+
+Expected Output:
+────────────────
+Total records: ~28 (from Logsheet only)
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT CHANGED                                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+BEFORE (All worksheets):
+────────────────────────
+❌ Processed ALL worksheets (visible + hidden)
+❌ Got data from multiple sheets
+❌ Total: 183 records from all sheets combined
+
+AFTER (Logsheet only):
+──────────────────────
+✅ Only looks for "Logsheet" worksheet
+✅ Extracts data from Logsheet only
+✅ Ignores all other worksheets
+✅ Total: ~28 records from Logsheet
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ DEBUG/WARNING MESSAGES                                                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Clean Run (Logsheet found):
+───────────────────────────
+- No debug popups (works silently)
+- Extracts ~28 records
+- Export button enabled
+- Ready to export
+
+Warning (Logsheet NOT found):
+──────────────────────────────
+You'll see a warning message:
+"WARNING: 'Logsheet' worksheet not found!"
++ List of available worksheets
+
+This helps you identify if the worksheet name is different.
+
+Debug (No records extracted):
+─────────────────────────────
+If Logsheet is found but no records extracted, you'll see:
+"⚠️ NO RECORDS EXTRACTED"
++ Column detection status
++ Actual header names
+
+This helps diagnose column mismatch issues.
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ HOW TO RUN                                                                   ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Step 1: Run Application
+────────────────────────
+Double-click: RUN_APP.bat
+
+Step 2: Parse Files
+────────────────────
+Click: "Parse Files" button
+
+Step 3: Verify
+──────────────
+Check status: "Parsed 1 file(s), found ~28 records"
+
+Step 4: Export
+──────────────
+Click: "Export to Excel"
+Data will start from Column B ✅
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ MULTIPLE FILES                                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+If you have multiple Excel files in Raw_Data folder:
+- File 1: FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+  → Extracts from "Logsheet" only (~28 records)
+
+- File 2: Logsheet_Broadcom_Sep25_WanLing (version 1).xlsb.xlsx
+  → Extracts from "Logsheet" if it exists
+  
+Total: Sum of Logsheet data from all files
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ LOGSHEET STRUCTURE EXPECTED                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Row 1 (Header):
+───────────────
+Work Order | Model Number | Serial Number | Date dd-mm-yy | ... | Cat Int month | ...
+
+Row 2+ (Data):
+──────────────
+WO-xxx | M9803A | MY58101860 | 22-Sep-25 | ... | 12 | ...
+WO-xxx | E5071C | MY46519787 | 23-Sep-25 | ... | 12 | ...
+...
+
+Required Columns:
+─────────────────
+✅ Model Number (or variations: Model, Equipment, Instrument)
+✅ Serial Number (or variations: Serial, S/N, SN)
+✅ Date dd-mm-yy (Calibration Date)
+✅ Cat Int month (Calibration Interval in months)
+
+Due Date Calculation:
+─────────────────────
+Due Date = Calibration Date + Cat Int month
+
+Example:
+- Cal Date: 22-Sep-2025
+- Cat Int: 12 months
+- Due Date: 22-Sep-2026 ✅
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                          ✅ READY TO USE!                                    ║
+║                                                                              ║
+║  Parser configured to extract from "Logsheet" worksheet ONLY.               ║
+║  All other worksheets (including hidden ones) will be ignored.              ║
+║                                                                              ║
+║  Expected: ~28 records from Logsheet                                        ║
+║  Run: RUN_APP.bat                                                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Build: ✅ Successful
+Configuration: Logsheet ONLY
+Other worksheets: IGNORED
+Expected records: ~28 (from Logsheet)
+Data export: Column B onwards
+Date: October 31, 2025
+
+
+
+
+
+
+
+
+
+
+
+

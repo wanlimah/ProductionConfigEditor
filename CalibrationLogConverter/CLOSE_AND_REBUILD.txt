@@ -1,0 +1,62 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    ✅ FIX READY - CLOSE APP FIRST!                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+PROBLEM IDENTIFIED:
+───────────────────
+Your column header is: "Cal Int\nmonth" (with a line break)
+The parser was looking for: "cal int month" (as one line)
+
+FIX APPLIED:
+────────────
+✅ Added newline removal to handle multi-line headers
+✅ Added "cal int" (without "month") to search variations
+✅ Should now match your "Cal Int\nmonth" header
+
+NEXT STEPS:
+───────────
+
+1. CLOSE THE APPLICATION
+   ─────────────────────
+   → Close CalibrationLogConverter (it's currently running)
+   → The exe file is locked and preventing rebuild
+
+2. RUN THIS COMMAND
+   ────────────────
+   From PowerShell in the project folder:
+   
+   cd CalibrationLogConverter\CalibrationLogConverter
+   dotnet build -c Release
+
+3. RERUN THE APPLICATION
+   ─────────────────────
+   RUN_APP.bat
+   (or use the exe directly)
+
+4. TEST YOUR FILE AGAIN
+   ────────────────────
+   → Load: Logsheet_Broadcom_Sep25_WanLing (version 1).xlsb
+   → Click "Parse Files"
+   → Due dates should now be calculated! ✅
+
+══════════════════════════════════════════════════════════════════════════════
+
+The .NET 6.0 version was rebuilt successfully.
+You can also try running:
+
+CalibrationLogConverter\bin\Release\net6.0-windows\CalibrationLogConverter.exe
+
+This version has the fix applied!
+
+══════════════════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+

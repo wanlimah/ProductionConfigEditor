@@ -1,0 +1,13 @@
+ISSUE:
+When on the main page (Step 1), clicking the 'Return to Start' button showed a dialog asking if the user wanted to return to Step 1 or start fresh.
+This was redundant and confusing as the user was already on Step 1.
+
+FIX:
+Modified MainWindow.xaml.cs:OnReturnToStartClick method.
+Added a check at the beginning of the method:
+if (viewModel.CurrentStep == 1) return;
+
+RESULT:
+Clicking 'Return to Start' while on Step 1 now does nothing, preventing the unnecessary dialog from appearing.
+
+

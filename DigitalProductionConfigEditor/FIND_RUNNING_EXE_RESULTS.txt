@@ -1,0 +1,8 @@
+Checking for running process... 
+ 
+ 
+OUR COMPILED EXE SHOULD BE AT: 
+C:\Users\wanlimah\DigitalProductionConfigEditor\DigitalProductionConfigEditor\bin\Debug\net6.0-windows\DigitalProductionConfigEditor.exe 
+ 
+File date of OUR compiled exe: 
+11/11/2025  02:25 PM           308,224 DigitalProductionConfigEditor.exe

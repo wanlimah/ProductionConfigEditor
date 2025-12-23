@@ -1,0 +1,189 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                  CALIBRATION LOG CONVERTER - QUICK START                   ║
+║                           Updated: Oct 31, 2025                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📋 WHAT IT DOES                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+  Converts vendor on-site calibration logs to standardized Excel format
+  
+  Extracts:  ✓ Model          ✓ Serial Number      ✓ Due Date
+  
+  NEW: Data starts from Column B (Column A is empty for your use!)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🚀 QUICK START (3 Easy Steps)                                             │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  STEP 1: Put Files Here
+  ─────────────────────────────────────────────────────────────────────
+  C:\Users\wanlimah\Documents\Raw_Data\
+     └─ Your calibration files (.xlsx, .xls, .xlsb)
+
+  STEP 2: Run Application
+  ─────────────────────────────────────────────────────────────────────
+  Double-click:
+  CalibrationLogConverter\CalibrationLogConverter\bin\Release\
+  net8.0-windows\CalibrationLogConverter.exe
+
+  STEP 3: Parse & Export
+  ─────────────────────────────────────────────────────────────────────
+  1. Click "🔄 Parse Files"      (auto-loads from Raw_Data)
+  2. Review data in preview
+  3. Click "💾 Export to Excel"  (choose save location)
+  4. Done!
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📊 OUTPUT FORMAT                                                           │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Excel Layout:
+  ┌─────────┬────────────┬───────────────┬────────────┐
+  │    A    │     B      │       C       │     D      │
+  ├─────────┼────────────┼───────────────┼────────────┤
+  │ (EMPTY) │ Model      │ Serial Number │ Due Date   │  Row 1 (Header)
+  ├─────────┼────────────┼───────────────┼────────────┤
+  │ (EMPTY) │ Scope XY20 │ SN12345       │ 2025-12-31 │  Row 2 (Data)
+  ├─────────┼────────────┼───────────────┼────────────┤
+  │ (EMPTY) │ Meter AB5  │ SN67890       │ 2025-11-15 │  Row 3 (Data)
+  └─────────┴────────────┴───────────────┴────────────┘
+
+  💡 Use Column A for:
+     • Sequential numbers (1, 2, 3...)
+     • Checkboxes ☑
+     • Status indicators (✓, ✗, ⚠)
+     • Priority flags
+     • Custom notes
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ⚙️ FEATURES                                                                │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  ✓ Auto-loads files from Raw_Data folder
+  ✓ Multi-vendor support (extensible parser system)
+  ✓ Smart column detection
+  ✓ Live data preview
+  ✓ Batch processing (multiple files at once)
+  ✓ Professional Excel output with formatting
+  ✓ Summary sheet with statistics
+  ✓ Due date warnings
+  ✓ Extended export option (more fields)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📁 FILE LOCATIONS                                                          │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Input Files:
+  └─ C:\Users\wanlimah\Documents\Raw_Data\
+
+  Application:
+  └─ C:\Users\wanlimah\DigitalProductionConfigEditor\
+     CalibrationLogConverter\CalibrationLogConverter\bin\Release\
+     net8.0-windows\CalibrationLogConverter.exe
+
+  Documentation:
+  └─ C:\Users\wanlimah\DigitalProductionConfigEditor\
+     CalibrationLogConverter\
+     ├─ README.md
+     ├─ QUICK_VISUAL_GUIDE.md
+     ├─ EXPORT_COLUMN_UPDATE.md
+     └─ CHANGES_SUMMARY.txt
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🎯 SUPPORTED FILE FORMATS                                                  │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Input:   .xlsx (Excel 2007+)
+           .xls  (Excel 97-2003)
+           .xlsb (Excel Binary)
+
+  Output:  .xlsx (Excel 2007+)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 💾 EXPORT OPTIONS                                                          │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Standard Export (Default):
+  └─ Model, Serial Number, Due Date (starting Column B)
+
+  Extended Export (Optional):
+  └─ All above PLUS:
+     • Calibration Date
+     • Status
+     • Location
+     • Technician
+     • Vendor
+     • Notes
+     • Source File
+     • Source Row
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🔧 COMMAND LINE USAGE (Optional)                                           │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  From Project Directory:
+  > cd CalibrationLogConverter\CalibrationLogConverter
+  > dotnet run
+
+  From Anywhere:
+  > dotnet run --project "C:\Users\wanlimah\DigitalProductionConfigEditor\
+    CalibrationLogConverter\CalibrationLogConverter\
+    CalibrationLogConverter.csproj"
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ❓ TROUBLESHOOTING                                                         │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Problem: No files found
+  Solution: Check files are in C:\Users\wanlimah\Documents\Raw_Data\
+            or use Browse button to select files manually
+
+  Problem: No suitable parser found
+  Solution: Ensure filename contains vendor keywords (e.g., "broadcom")
+            or create custom parser for your vendor
+
+  Problem: Error parsing file
+  Solution: Check Excel file is not corrupted
+            Verify file has expected columns (Model, S/N, Due Date)
+
+  Problem: Dates not showing correctly
+  Solution: Ensure dates in source file are in recognizable format
+            Check Excel cell format is Date (not Text)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📖 MORE HELP                                                               │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Complete Documentation: See README.md
+  Visual Examples:        See QUICK_VISUAL_GUIDE.md
+  Technical Details:      See EXPORT_COLUMN_UPDATE.md
+  Change Log:             See CHANGES_SUMMARY.txt
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ✅ READY TO USE!                                                           │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  1. Place files in Raw_Data folder
+  2. Run CalibrationLogConverter.exe
+  3. Click Parse → Click Export → Done!
+
+  Data will export starting from Column B as requested.
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ Questions? Check README.md for detailed documentation                     ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+
+
+
+
+
+
+
+
+
+
+
+

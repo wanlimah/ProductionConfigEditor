@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProductionUserConfig>
+  <ProductionUserConfigs viewer = "false">
+    <!-- 
+				Common Instructions:			
+				1. 'name' is the package name. 
+					- 'SUSER' refers to a user mode where Clotho is executed by the user in SUSER mode.
+				2. 'enable' determines whether the package is active ("TRUE" for active, "FALSE" for inactive).
+	            		3. The default value for enable is FALSE for all items, except for MQTT_ENABLE.
+			-->
+    <GU_ENGINEERING_MODE_ENABLE>
+      <Package name="SUSER" enable="TRUE" />
+      <Package name="WW-PROD" enable="TRUE" />
+    </GU_ENGINEERING_MODE_ENABLE>
+    <SKIP_OUTPUT_PORT_ON_FAILURE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="WW-QA" enable="FALSE" />
+    </SKIP_OUTPUT_PORT_ON_FAILURE>
+    <STOP_TEST_ON_CONTINUOUS_FAILURE_COUNT_1A>
+      <Package name="SUSER" enable="FALSE" count="5" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="5" />
+      <!-- Setting Instructions:			
+					1. 'count' represents the number of consecutive failures
+				-->
+    </STOP_TEST_ON_CONTINUOUS_FAILURE_COUNT_1A>
+    <STOP_TEST_ON_CONTINUOUS_FAILURE_COUNT_2A>
+      <Package name="SUSER" enable="FALSE" count="30" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="30" />
+      <!-- Setting Instructions:			
+					1. 'count' represents the number of consecutive failures
+				-->
+    </STOP_TEST_ON_CONTINUOUS_FAILURE_COUNT_2A>
+    <DETECT_CONTACTOR_ID_CHANGED>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </DETECT_CONTACTOR_ID_CHANGED>
+    <PAUSE_TEST_ON_DUPLICATED_MODULE_ID>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </PAUSE_TEST_ON_DUPLICATED_MODULE_ID>
+    <GUCAL_ALLOW_ENABLE>
+      <Package name="SUSER" enable="TRUE" note="Please use AFEM-8266-AP1-QA to perform GUCAL" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" note="Please use AFEM-8266-AP1-QA to perform GUCAL" />
+    </GUCAL_ALLOW_ENABLE>
+    <PARAM_COUNT_CHECK>
+      <Package name="SUSER" enable="FALSE" count="0" />
+      <Package name="8266-PROD" enable="TRUE" count="0" />
+      <Package name="WW-PROD" enable="TRUE" count="57" />
+      <Package name="WW-QA" enable="TRUE" count="57" />
+      <Package name="WW-REQ" enable="TRUE" count="57" />
+      <Package name="WW-PS" enable="TRUE" count="57" />
+      <Package name="WW-SMPL" enable="TRUE" count="57" />
+      <Package name="RS-PROD" enable="TRUE" count="57" />
+      <Package name="RS-QA" enable="TRUE" count="57" />
+      <Package name="RS-REQ" enable="TRUE" count="57" />
+      <Package name="RS-PS" enable="TRUE" count="57" />
+      <Package name="RS-SMPL" enable="TRUE" count="57" />
+      <!-- Setting Instructions:			
+					1. 'count' represents the number of parameters.
+				-->
+    </PARAM_COUNT_CHECK>
+    <GENERATE_HEADERCOUNTS_FOR_ALL_PACKAGES>
+      <Package name="SUSER" enable="FALSE" />
+    </GENERATE_HEADERCOUNTS_FOR_ALL_PACKAGES>
+    <TTD_FILE_ENABLE>
+      <Package name="SUSER" enable="FALSE" count="3" sampling="5" />
+      <!-- 	Setting Instructions:		
+					1. 'count' represents the number of items generated.
+					2. 'sampling' represents the sampling interval;
+				-->
+    </TTD_FILE_ENABLE>
+    <DC_PDM_TRACE_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="8267-PROD" enable="FALSE" />
+    </DC_PDM_TRACE_ENABLE>
+    <CAP_MEASUREMENT_TRACE_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </CAP_MEASUREMENT_TRACE_ENABLE>
+    <RF_TIMING_TEST_TRACE_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+      <!-- 	Setting Instructions:
+					1. 'count' represents the number of items generated.
+				-->
+    </RF_TIMING_TEST_TRACE_ENABLE>
+    <PIN_SWEEP_POWER_DROP_TRACE_ENABLE>
+      <Package name="SUSER" enable="FALSE" count="3" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="3" />
+      <!-- 	Setting Instructions:
+					1. 'count' represents the number of items generated.
+				-->
+    </PIN_SWEEP_POWER_DROP_TRACE_ENABLE>
+    <PIN_SWEEP_TRACE_ENABLE>
+      <Package name="SUSER" enable="FALSE" count="3" sampling="5" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="3" sampling="5" />
+      <!-- 	Setting Instructions:		
+					1. 'count' represents the number of items generated.
+					2. 'sampling' represents the sampling interval;
+				-->
+    </PIN_SWEEP_TRACE_ENABLE>
+    <HANDLER_ARM_YIELD_DELTA_ENABLE>
+      <Package name="SUSER" enable="TRUE" count="100" threshold="99" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="100" threshold="99" />
+		<!-- Setting Instructions:
+					1. 'count' represents the number of units to test for calculating the yield delta between ARM1 and ARM2.
+					2. 'threshold'
+					   -   Arm1 Yield = Math.Round(((TotalPassArm1 / TotalTestArm1) * 100), 2);
+					   -   Arm2 Yield = Math.Round(((TotalPassArm2 / TotalTestArm1) * 100), 2);
+					   -   threshold = Math.Abs(Arm1Yield - Arm2Yield);
+				-->
+    </HANDLER_ARM_YIELD_DELTA_ENABLE>
+    <INLINE_SORTER_ENABLE>
+      <RuleOptions> DATETIME | REV </RuleOptions>
+      <Package name="SUSER" enable="FALSE" rule="REV" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" rule="REV" />
+    </INLINE_SORTER_ENABLE>
+    <INLINE_SORTER_QUEEN_ENABLE>
+      <ModeOptions> AUTO | MANUAL </ModeOptions>
+      <Package name="SUSER" enable="FALSE" mode="AUTO" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" mode="AUTO" />
+      <Package name="AFEM-8266-AP1-RF1-QA-RF1-POWER" enable="FALSE" mode="AUTO" />
+    </INLINE_SORTER_QUEEN_ENABLE>
+    <DPAT_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </DPAT_ENABLE>
+    <ILBF_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </ILBF_ENABLE>
+    <ENA_SNP_FILE_FASTSAVING_MODE_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </ENA_SNP_FILE_FASTSAVING_MODE_ENABLE>
+    <ENA_AVERAGE_MODE_ON>
+      <ModeOptions> SWEEP | POINT </ModeOptions>
+      <AvgChannelOptions> ALL | EACH </AvgChannelOptions>
+      <Package name="SUSER" enable="FALSE" count="5" mode="SWEEP" avg_channel="ALL" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="5" mode="SWEEP" avg_channel="EACH" />
+    </ENA_AVERAGE_MODE_ON>
+    <ENA_SNP_FILE_ENABLE>
+      <Package name="SUSER" enable="FALSE" count="3" sampling="5" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="3" sampling="5" />
+      <!-- Setting Instructions:				
+					1. 'count' represents the number of items generated.
+					2. 'sampling' represents the sampling interval;
+				-->
+    </ENA_SNP_FILE_ENABLE>
+    <ENA_TIGER_FILE_ENABLE>
+      <Package name="SUSER" enable="FALSE" count="15" sampling="1" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="15" sampling="1" />
+      <!-- Setting Instructions:				
+					1. 'count' represents the number of items generated.
+					2. 'sampling' represents the sampling interval;
+				-->
+    </ENA_TIGER_FILE_ENABLE>
+    <ENA_CAL_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </ENA_CAL_ENABLE>
+    <SWITCH_LIFE_TIME_CHECK>
+      <Package name="SUSER" enable="FALSE" count="10000000" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" count="10000000" />
+      <!-- Setting Instructions:			
+					1. 'count'  represents the number specified in the SWITCH_LIFE_TIME spec
+				-->
+    </SWITCH_LIFE_TIME_CHECK>
+    <MQTT_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+    </MQTT_ENABLE>
+    <WEB_SERVICE_ENABLE>
+      <Package name="SUSER" enable="FALSE" url="" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" url="" />
+    </WEB_SERVICE_ENABLE>
+    <KEYENCE_2DID_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AFEM-8266-AP1-RF1-QA" enable="FALSE" />
+    </KEYENCE_2DID_ENABLE>
+    <AI_DPR_ENABLE>
+      <Package name="SUSER" enable="FALSE" />
+      <Package name="AP1-RF1" enable="FALSE" />
+      <Package name="AP1-RF1-POWER" enable="FALSE" />
+    </AI_DPR_ENABLE>
+   <DC_CONTACT_MODE_ENABLE>
+     <Package name="SUSER" enable="TRUE"/>
+     <Package name="ENGR-8288-AP1-NF" enable="FALSE"/>
+     <Package name="ENGR-8288-AP1-QA-NF" enable="FALSE"/>
+     <Package name="ENGR-8289-AP1-NF" enable="FALSE"/>
+     <Package name="ENGR-8289-AP1-QA-NF" enable="FALSE"/>
+     <Package name="ENGR-8288-AP1-REQ-NF" enable="FALSE"/>
+     <Package name="ENGR-8289-AP1-REQ-NF" enable="FALSE"/>
+   </DC_CONTACT_MODE_ENABLE>
+
+  </ProductionUserConfigs>
+
+    <DC_CONTACT_MODE_SETTING_OVERWRITE>
+      <Pin Name="Vdd" VSet="0.1" ISet="10e-6" HighLimit="9.5e-6" TestMode="FORCEV"/>
+      <Pin Name="Vio1" VSetHi="1.2" VSetLo="-0.3" ISource="1.5e-6" ILevel="2e-6" HighLimit="1.14" LowLimit="50e-3" TestMode="FORCEI"/>
+      <Delayms Value="80"/>
+    </DC_CONTACT_MODE_SETTING_OVERWRITE>
+
+  <PcbFormatConfig>
+    <Island id="1">
+      <StripUnitCount x="50" y="17" />
+      <PanelStripCount x="2" y="4" />
+    </Island>
+    <Island id="2">
+      <StripUnitCount x="52" y="17" />
+      <PanelStripCount x="2" y="4" />
+    </Island>
+  </PcbFormatConfig>
+  <DeveloperValidationConfig>
+    <CONTACTOR_ID>
+      <Package name="SUSER" enable="FALSE" />
+    </CONTACTOR_ID>
+    <TESTBOARD_ID>
+      <Package name="SUSER" enable="FALSE" />
+    </TESTBOARD_ID>
+    <EQUIPMENT_ID>
+      <Package name="SUSER" enable="FALSE" />
+    </EQUIPMENT_ID>
+    <SELF_CALIBRATION>
+      <Package name="SUSER" enable="FALSE" />
+    </SELF_CALIBRATION>
+    <PXI_CALIBRATION_LOG>
+      <Package name="SUSER" enable="FALSE" />
+    </PXI_CALIBRATION_LOG>
+    <VERIFY_GU_EXPIRATION>
+      <Package name="SUSER" enable="FALSE" />
+    </VERIFY_GU_EXPIRATION>
+    <OTP_BURN_MODULEID_STATUS>
+      <Package name="SUSER" enable="FALSE" />
+    </OTP_BURN_MODULEID_STATUS>
+  </DeveloperValidationConfig>
+
+</ProductionUserConfig>

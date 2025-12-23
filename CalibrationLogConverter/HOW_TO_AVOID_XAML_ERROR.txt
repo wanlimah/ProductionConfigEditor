@@ -1,0 +1,227 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║              HOW TO AVOID THE XAML ERROR (XamlParseException)             ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ⚠️ THE PROBLEM                                                             │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  You're getting this error:
+  
+  "Error: The invocation of the constructor on type 
+   'CalibrationLogConverter.MainWindow' that matches the specified 
+   binding constraints threw an exception.
+   
+   Type: XamlParseException"
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🔍 ROOT CAUSE                                                              │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  This happens when:
+  
+  1. ❌ Multiple instances of the app are running at the same time
+  2. ❌ Old build artifacts exist from a previous version
+  3. ❌ The app was running when you tried to rebuild
+  4. ❌ You double-clicked the EXE multiple times quickly
+
+  Today we found: 8 INSTANCES RUNNING AT ONCE! ⚠️
+  
+  This causes file locks and XAML loading conflicts.
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ✅ IMMEDIATE FIX (If You Have the Error Now)                              │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Option 1: Run the Automated Fix Script (EASIEST)
+  ────────────────────────────────────────────────────────────────────────
+  Double-click:  FIX_XAML_ERROR.bat
+  
+  This will automatically:
+  • Close all running instances
+  • Clean build artifacts
+  • Rebuild the application
+  • Verify the fix
+
+  Option 2: Manual Fix
+  ────────────────────────────────────────────────────────────────────────
+  1. Press Ctrl+Shift+Esc (Task Manager)
+  2. Find ALL "CalibrationLogConverter.exe" processes
+  3. Right-click each → End Task
+  4. Close Task Manager
+  5. Double-click: FIX_XAML_ERROR.bat
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🛡️ PREVENTION (How to Avoid This Error)                                   │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  ✅ DO:
+  ──────────────────────────────────────────────────────────────────────────
+  ✓ Use RUN_APP_SAFE.bat to launch the app
+    → It automatically closes old instances first
+  
+  ✓ Wait for the app to fully load before clicking again
+  
+  ✓ Close the app completely before running it again
+  
+  ✓ Run only ONE instance at a time
+  
+  ✓ If the app seems frozen, close it via Task Manager
+
+  ❌ DON'T:
+  ──────────────────────────────────────────────────────────────────────────
+  ✗ Don't double-click the EXE multiple times quickly
+  
+  ✗ Don't run multiple instances simultaneously
+  
+  ✗ Don't rebuild while the app is running
+  
+  ✗ Don't use the old RUN_APP.bat (use RUN_APP_SAFE.bat instead)
+  
+  ✗ Don't ignore error dialogs - close them properly
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📁 WHICH FILES TO USE                                                      │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  ✅ RECOMMENDED FILES:
+  
+  To Run the App:
+  └─ RUN_APP_SAFE.bat           ← USE THIS ONE! (Prevents multiple instances)
+  
+  If You Get XAML Error:
+  └─ FIX_XAML_ERROR.bat         ← Automatic fix script
+  
+  ❌ OLD FILES (Don't use these):
+  
+  └─ RUN_APP.bat                ← Old version (no multi-instance protection)
+  └─ CalibrationLogConverter.exe ← Can run multiple times if clicked fast
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🎯 RECOMMENDED WORKFLOW                                                    │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Step 1: Launch
+  ────────────────────────────────────────────────────────────────────────
+  Double-click: RUN_APP_SAFE.bat
+  Wait for the application window to appear
+  
+  Step 2: Use the App
+  ────────────────────────────────────────────────────────────────────────
+  • Place files in: C:\Users\wanlimah\Documents\Raw_Data\
+  • Click "Parse Files"
+  • Review data
+  • Click "Export to Excel"
+  • Save your file
+  
+  Step 3: Close Properly
+  ────────────────────────────────────────────────────────────────────────
+  • Click the X button in the app window
+  • Wait for the window to close completely
+  • Check Task Manager if unsure (Ctrl+Shift+Esc)
+  
+  Step 4: Before Running Again
+  ────────────────────────────────────────────────────────────────────────
+  • Make sure previous instance is closed
+  • Use RUN_APP_SAFE.bat (it checks for you)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🔧 TROUBLESHOOTING CHECKLIST                                              │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  If you get XAML error:
+  
+  ☐ Run FIX_XAML_ERROR.bat
+  ☐ Wait for it to complete
+  ☐ Use RUN_APP_SAFE.bat to launch
+  ☐ Only click once and wait
+  
+  If error persists:
+  
+  ☐ Open Task Manager (Ctrl+Shift+Esc)
+  ☐ End ALL CalibrationLogConverter.exe processes manually
+  ☐ Run FIX_XAML_ERROR.bat again
+  ☐ Restart your computer (if still having issues)
+  ☐ Run FIX_XAML_ERROR.bat one more time
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📊 WHAT WE FOUND TODAY                                                     │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  When you reported the error, we discovered:
+  
+  • 8 instances of CalibrationLogConverter.exe running simultaneously! ⚠️
+  • This caused file locks preventing proper startup
+  • Old XAML artifacts were conflicting
+  
+  After fix:
+  • Closed all 8 instances
+  • Cleaned build artifacts
+  • Rebuilt successfully
+  • Created prevention tools (RUN_APP_SAFE.bat, FIX_XAML_ERROR.bat)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 💡 PRO TIPS                                                                │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  1. Bookmark RUN_APP_SAFE.bat
+     → Always use this to launch the app
+  
+  2. Patience is key
+     → Wait for the app to fully load (takes 2-3 seconds)
+  
+  3. One task at a time
+     → Parse files → Export → Close → Open again for next batch
+  
+  4. Regular cleanup
+     → Run FIX_XAML_ERROR.bat weekly as maintenance
+  
+  5. Check Task Manager
+     → Before launching, check no instances are running:
+       Ctrl+Shift+Esc → Look for CalibrationLogConverter.exe
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📞 QUICK REFERENCE                                                         │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  To Launch App:          RUN_APP_SAFE.bat
+  To Fix XAML Error:      FIX_XAML_ERROR.bat
+  To Check Running Apps:  Ctrl+Shift+Esc (Task Manager)
+  To Kill All Instances:  taskkill /F /IM CalibrationLogConverter.exe
+  
+  Data Location:          C:\Users\wanlimah\Documents\Raw_Data\
+  Output Format:          Data starts from Column B
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ✅ SUMMARY                                                                 │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  The XAML error is caused by running multiple instances at once.
+  
+  Prevention:
+  • Always use RUN_APP_SAFE.bat
+  • Close properly before relaunching
+  • Don't double-click multiple times
+  
+  Fix:
+  • Run FIX_XAML_ERROR.bat
+  • It will clean and rebuild automatically
+  
+  The application is now fixed and ready to use!
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║  Use RUN_APP_SAFE.bat and you won't have this problem again!              ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+
+
+
+
+
+
+
+
+
+
+

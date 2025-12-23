@@ -1,0 +1,134 @@
+═══════════════════════════════════════════════════════════════════════════
+    📊 CALIBRATION LOG CONVERTER - QUICK START GUIDE
+═══════════════════════════════════════════════════════════════════════════
+
+🎯 PURPOSE
+Convert vendor calibration logs to standardized Excel format with:
+  • Model
+  • Serial Number  
+  • Due Date
+
+═══════════════════════════════════════════════════════════════════════════
+⚡ QUICK START (3 STEPS)
+═══════════════════════════════════════════════════════════════════════════
+
+1️⃣  LOAD FILES
+    - Files from C:\Users\wanlimah\Documents\Raw_Data auto-load
+    - Or click "Browse..." to select files manually
+    
+2️⃣  PARSE FILES
+    - Click "🔄 Parse Files"
+    - Review data in preview grid
+    
+3️⃣  EXPORT
+    - Click "💾 Export to Excel"
+    - Save file
+    - Done! ✅
+
+═══════════════════════════════════════════════════════════════════════════
+📂 SUPPORTED FILE TYPES
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Excel 2007+ (.xlsx)
+✅ Excel 97-2003 (.xls)
+✅ Excel Binary (.xlsb)
+
+═══════════════════════════════════════════════════════════════════════════
+🏢 SUPPORTED VENDORS
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Broadcom
+   - FM-002 Field Calibration Reports
+   - Logsheet formats
+   - Campaign reports
+
+═══════════════════════════════════════════════════════════════════════════
+⚙️ EXPORT OPTIONS
+═══════════════════════════════════════════════════════════════════════════
+
+☑ Include extended fields
+   - Adds: Calibration Date, Status, Location, Technician, Vendor, Notes
+   - Default: Checked
+   
+☑ Automatically open Excel file after export
+   - Opens file immediately when done
+   - Default: Checked
+
+═══════════════════════════════════════════════════════════════════════════
+📊 OUTPUT FORMAT
+═══════════════════════════════════════════════════════════════════════════
+
+SHEET 1: Calibration Records
+┌──────────┬────────────────┬────────────┐
+│ Model    │ Serial Number  │ Due Date   │
+├──────────┼────────────────┼────────────┤
+│ DMM-6500 │ 12345678      │ 2025-12-31 │
+└──────────┴────────────────┴────────────┘
+
+SHEET 2: Summary
+- Total records
+- Records by vendor
+- Records by source file
+- Upcoming calibrations (within 30 days) ⚠️
+- Overdue calibrations ⚠️
+
+═══════════════════════════════════════════════════════════════════════════
+🔍 HOW THE PARSER WORKS
+═══════════════════════════════════════════════════════════════════════════
+
+The parser automatically finds columns by searching for these keywords:
+
+MODEL:        model, equipment, instrument, device
+SERIAL:       serial, serial number, s/n, sn  
+DUE DATE:     due date, next cal, next calibration, expiry, cal due
+CAL DATE:     cal date, calibration date, date calibrated, date
+STATUS:       status, result, pass/fail
+LOCATION:     location, site, facility
+TECHNICIAN:   technician, tech, calibrated by, engineer
+NOTES:        notes, remarks, comments
+
+⚡ All searches are CASE-INSENSITIVE
+⚡ Automatically SKIPS empty rows
+⚡ Works with ANY sheet in the workbook
+
+═══════════════════════════════════════════════════════════════════════════
+💡 TIPS
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Place all calibration files in: C:\Users\wanlimah\Documents\Raw_Data
+✅ Preview data before exporting
+✅ Check Summary sheet for overdue items
+✅ Use extended fields for complete tracking
+✅ Keep source files as backup
+
+═══════════════════════════════════════════════════════════════════════════
+🐛 COMMON ISSUES
+═══════════════════════════════════════════════════════════════════════════
+
+ISSUE: "No suitable parser found"
+FIX:   Check filename contains vendor keyword (e.g., "broadcom")
+
+ISSUE: "Export failed"  
+FIX:   Close Excel if file is already open
+
+ISSUE: Missing data
+FIX:   Enable "Include extended fields" option
+
+ISSUE: Empty preview
+FIX:   Check source file contains data in expected format
+
+═══════════════════════════════════════════════════════════════════════════
+📞 NEED HELP?
+═══════════════════════════════════════════════════════════════════════════
+
+1. Read the error message carefully
+2. Check README.md for detailed documentation
+3. Verify source files are in correct format
+4. Contact support team
+
+═══════════════════════════════════════════════════════════════════════════
+
+Version 1.0.0 | October 30, 2025
+
+═══════════════════════════════════════════════════════════════════════════
+

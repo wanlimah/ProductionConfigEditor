@@ -1,0 +1,150 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║              TEST THE APPLICATION WITH DEBUG OUTPUT                          ║
+║                    This will show you what's happening                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+I've added DEBUG MESSAGE BOXES to the application that will show you EXACTLY
+what's happening when it parses your Excel file.
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ HOW TO TEST                                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Step 1: Run the Application
+────────────────────────────
+Run: RUN_APP.bat
+
+Step 2: Click "Parse Files"
+────────────────────────────
+The application will read your Excel file
+
+Step 3: READ THE DEBUG MESSAGE
+───────────────────────────────
+You will see a message box titled "Parser Debug Info" showing:
+
+   ✅ Worksheet name (should be "Logsheet")
+   ✅ Total rows in worksheet (this is the KEY number!)
+   ✅ Data rows processed
+   ✅ Data rows skipped
+   ✅ Column detection results
+   ✅ Final record count
+
+Step 4: Take a Screenshot or Write Down:
+─────────────────────────────────────────
+   □ Total rows in worksheet: _______
+   □ Data rows processed: _______
+   □ Data rows skipped: _______
+   □ Final records: _______
+
+Step 5: After the Debug Message
+────────────────────────────────
+You'll see another message with file details and tips.
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT THE DEBUG INFO TELLS US                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Scenario 1: Total rows = 184 (Header + 183 data rows)
+──────────────────────────────────────────────────────
+If you see:
+   Total rows in worksheet: 184
+   Data rows processed: 183
+   Data rows skipped: 0
+
+This means: Your Excel file ACTUALLY HAS only 183 rows of data.
+            This is NOT a bug - the file itself has 183 records.
+
+Scenario 2: Total rows = 500+ but only 183 processed
+─────────────────────────────────────────────────────
+If you see:
+   Total rows in worksheet: 500
+   Data rows processed: 183
+   Data rows skipped: 316
+
+This means: The file has 500 rows, but 316 are being skipped.
+            Need to investigate WHY rows are being skipped.
+
+Scenario 3: Columns NOT FOUND
+──────────────────────────────
+If you see:
+   Model Column: NOT FOUND
+   Serial Column: NOT FOUND
+
+This means: The parser can't find the correct column headers.
+            The worksheet might not be "Logsheet" or headers are different.
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ IMPORTANT QUESTIONS TO ANSWER                                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+After running the test, please answer:
+
+1. What is the "Total rows in worksheet" number? __________
+
+2. What is "Data rows processed"? __________
+
+3. What is "Data rows skipped"? __________
+
+4. Did it find all columns correctly? (Yes/No) __________
+
+5. What is the final record count? __________
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ PARALLEL TEST: Check the Excel File Manually                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+While you're at it, please also:
+
+1. Open: C:\Users\wanlimah\Documents\Raw_Data\
+         FM-002_Field Calibration Daily Report (Broadcom PG).xlsx
+
+2. Look for worksheet named "Logsheet"
+
+3. Press Ctrl+End to jump to the last cell with data
+
+4. Note the row number: __________
+
+5. Count: Row number minus 1 (for header) = __________ data rows
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ COMPARE THE RESULTS                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Manual Count from Excel: __________ rows
+Application Debug Info: __________ total rows
+Application Processed: __________ rows
+Application Skipped: __________ rows
+Final Export: __________ records
+
+Do the numbers match? ___________
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ THIS WILL TELL US THE REAL ISSUE                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Based on these numbers, we can determine:
+
+✅ If the Excel file actually has only 183 rows
+✅ If rows are being skipped incorrectly
+✅ If the wrong worksheet is being read
+✅ If columns are not being detected
+✅ If there's a different issue
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    RUN THE TEST NOW AND REPORT RESULTS                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+The application is rebuilt with debug output.
+Run RUN_APP.bat and tell me what the debug message shows!
+
+
+
+
+
+
+
+
+
+
+
+

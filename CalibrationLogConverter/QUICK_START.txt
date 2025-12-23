@@ -1,0 +1,199 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║      📊 CALIBRATION LOG CONVERTER - QUICK START GUIDE                ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════════
+  🚀 GETTING STARTED IN 3 STEPS
+═══════════════════════════════════════════════════════════════════════
+
+  STEP 1: Launch Application
+  ──────────────────────────────
+  Run: dotnet run
+  
+  Files from C:\Users\wanlimah\Documents\Raw_Data
+  are automatically loaded!
+
+
+  STEP 2: Parse Files
+  ──────────────────────────────
+  Click: 🔄 Parse Files
+  
+  ✅ Wait for "Parsing Complete!" message
+  ✅ Review data in preview grid
+
+
+  STEP 3: Export to Excel
+  ──────────────────────────────
+  Click: 💾 Export to Excel
+  
+  ✅ Choose save location
+  ✅ Click Save
+  ✅ Done! Your report is ready
+
+
+═══════════════════════════════════════════════════════════════════════
+  📂 SUPPORTED FILE TYPES
+═══════════════════════════════════════════════════════════════════════
+
+  ✅ Excel 2007+ (.xlsx)
+  ✅ Excel 97-2003 (.xls)
+  ✅ Excel Binary (.xlsb)
+
+
+═══════════════════════════════════════════════════════════════════════
+  📊 WHAT GETS EXTRACTED
+═══════════════════════════════════════════════════════════════════════
+
+  REQUIRED FIELDS:
+  ────────────────
+  ✓ Model            - Equipment/Instrument name
+  ✓ Serial Number    - Device S/N
+  ✓ Due Date         - Next calibration date
+
+  OPTIONAL FIELDS (if available):
+  ─────────────────────────────────
+  ✓ Calibration Date - Last calibrated
+  ✓ Status           - Pass/Fail
+  ✓ Location         - Site/Facility
+  ✓ Technician       - Who performed calibration
+  ✓ Notes            - Remarks/Comments
+
+
+═══════════════════════════════════════════════════════════════════════
+  ⚙️ EXPORT OPTIONS
+═══════════════════════════════════════════════════════════════════════
+
+  ☑ Include extended fields
+     → Exports all fields (not just Model/SN/Due Date)
+
+  ☑ Automatically open Excel file after export
+     → Opens the file when done
+
+  💡 TIP: Keep both checked for first-time use!
+
+
+═══════════════════════════════════════════════════════════════════════
+  📋 OUTPUT INCLUDES
+═══════════════════════════════════════════════════════════════════════
+
+  SHEET 1: Calibration Records
+  ─────────────────────────────
+  All your extracted data in organized table format
+
+  SHEET 2: Summary
+  ─────────────────────────────
+  ✓ Total record count
+  ✓ Records by vendor
+  ✓ Records by source file
+  ⚠️ Due within 30 days (RED ALERT!)
+  ⚠️ Overdue calibrations (URGENT!)
+
+
+═══════════════════════════════════════════════════════════════════════
+  🎯 BUTTON GUIDE
+═══════════════════════════════════════════════════════════════════════
+
+  [Browse...]         Select different files
+  
+  [🔄 Parse Files]    Extract data from selected files
+  
+  [💾 Export to Excel] Save extracted data to Excel
+  
+  [🗑️ Clear]          Reset everything and start over
+
+
+═══════════════════════════════════════════════════════════════════════
+  ⚠️ IMPORTANT NOTES
+═══════════════════════════════════════════════════════════════════════
+
+  ✓ Always review the preview grid before exporting
+  
+  ✓ Original vendor files are NEVER modified
+  
+  ✓ Export includes timestamp in filename for tracking
+  
+  ✓ Green status = Success | Red status = Error
+  
+  ✓ Record count shown at bottom: "45 records"
+
+
+═══════════════════════════════════════════════════════════════════════
+  🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════
+
+  PROBLEM: "No suitable parser found"
+  SOLUTION: File doesn't match known vendor patterns.
+            Rename to include: "broadcom", "fm-002", or "logsheet"
+
+  PROBLEM: Missing data in preview
+  SOLUTION: Check source Excel file has recognizable column names
+            (Model, Serial Number, Due Date)
+
+  PROBLEM: Dates showing as numbers
+  SOLUTION: In source file, format date column as Date (not Text)
+
+  PROBLEM: Can't find files
+  SOLUTION: Use Browse button to select files manually
+
+
+═══════════════════════════════════════════════════════════════════════
+  📍 FILE LOCATIONS
+═══════════════════════════════════════════════════════════════════════
+
+  Default Input:  C:\Users\wanlimah\Documents\Raw_Data
+  
+  Application:    C:\Users\wanlimah\DigitalProductionConfigEditor\
+                  CalibrationLogConverter\CalibrationLogConverter
+  
+  Exports:        Your chosen location
+                  (Desktop recommended for easy access)
+
+
+═══════════════════════════════════════════════════════════════════════
+  ✨ TIPS FOR BEST RESULTS
+═══════════════════════════════════════════════════════════════════════
+
+  1. Organize all calibration logs in Raw_Data folder
+  
+  2. Use extended export first time to see all data
+  
+  3. Check Summary sheet for overdue warnings
+  
+  4. Keep historical exports for tracking changes
+  
+  5. Process all vendor files together for complete report
+
+
+═══════════════════════════════════════════════════════════════════════
+  📖 MORE HELP
+═══════════════════════════════════════════════════════════════════════
+
+  Detailed Guide:     See USER_GUIDE.md
+  Developer Info:     See README.md
+  
+
+═══════════════════════════════════════════════════════════════════════
+
+  Ready to convert? Launch the app and click Parse Files!
+  
+  Questions? Check USER_GUIDE.md for detailed instructions.
+
+═══════════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

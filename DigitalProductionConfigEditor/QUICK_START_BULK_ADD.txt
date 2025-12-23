@@ -1,0 +1,96 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║              BULK ADD PRODUCTS - QUICK START GUIDE                       ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+📋 WHAT IS IT?
+   Add multiple product names to your configuration at once!
+   Perfect for when you need to configure 10, 20, or even 100 products.
+
+🚀 HOW TO USE IT (3 SIMPLE STEPS)
+   
+   Step 1: Navigate to Step 2 in the wizard
+   └─ Select your configuration from the dropdown
+   
+   Step 2: Click "📋 Bulk Add Products" button
+   └─ It's right next to the "➕ Add Single Product" button
+   
+   Step 3: Enter product names and add!
+   └─ Type or paste product names (one per line)
+   └─ Review the preview on the right
+   └─ Click "Add All Products"
+
+📝 EXAMPLE INPUT
+
+   AFEM-8266-AP1-RF1-QA
+   AFEM-8267-AP1-RF1-QA
+   WW-PROD
+   WW-QA
+   RS-PROD
+   RS-QA
+
+   ↓ Results in 6 packages added instantly!
+
+✨ KEY FEATURES
+
+   ✓ Auto-converts to UPPERCASE
+   ✓ Removes empty lines automatically
+   ✓ Detects and skips duplicates
+   ✓ Shows live preview before adding
+   ✓ Uses same attributes as existing packages
+
+💡 PRO TIPS
+
+   • Copy product names from Excel and paste directly
+   • The attributes will match your existing packages
+   • You can still edit individual packages after bulk adding
+   • Don't forget to save your XML when done!
+
+⚠️ REMEMBER
+
+   Changes are NOT auto-saved!
+   Always click "💾 Save" or "💾 Save As" after bulk adding.
+
+───────────────────────────────────────────────────────────────────────────
+
+Need more help? Check out BULK_ADD_PRODUCTS_GUIDE.md for detailed docs!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

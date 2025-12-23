@@ -1,0 +1,43 @@
+       private void XmlTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+       {
+           if (XmlTreeView.SelectedItem is TreeViewItem selectedItem &&
+               selectedItem.Tag is XElement selectedBlock)
+           {
+               // Step 1
+               blockNameTextBox.Text = selectedBlock.Attribute("name")?.Value
+                                       ?? selectedBlock.Name.LocalName;
+              
+               string processValue = selectedBlock.Attribute("process")?.Value ?? "";
+               PopulateProcessComboBox();
+               foreach (var item in processComboBox.Items.OfType<ComboBoxItem>())
+               {
+                   if (string.Equals(item.Content?.ToString(), processValue, StringComparison.OrdinalIgnoreCase))
+                   {
+                       processComboBox.SelectedItem = item;
+                       break;
+                   }
+               }
+
+               // Step 2
+               packageTextBox.Text = selectedBlock.Attribute("")?.Value ?? "";
+               string enableValue = selectedBlock.Attribute("enable")?.Value ?? "";
+               foreach (var item in enableComboBox.Items.OfType<ComboBoxItem>())
+               {
+                   if (string.Equals(item.Content?.ToString(), enableValue, StringComparison.OrdinalIgnoreCase))
+                   {
+                       enableComboBox.SelectedItem = item;
+                       break;
+                   }
+               }
+               noteTextBox.Text = selectedBlock.Attribute("note")?.Value ?? "";
+
+               // Step 3
+               samplingTextBox.Text = selectedBlock.Attribute("sampling")?.Value ?? "";
+               countTextBox.Text = selectedBlock.Attribute("count")?.Value ?? "";
+
+               // Start wizard at Step 1
+               currentStep = 1;
+               ShowStep(currentStep);
+               UpdateNavButtons();
+           }
+       }

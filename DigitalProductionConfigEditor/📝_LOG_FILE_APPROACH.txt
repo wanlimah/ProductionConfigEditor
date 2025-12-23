@@ -1,0 +1,66 @@
+════════════════════════════════════════════════════════════════
+           📝 NEW APPROACH - LOG FILE DEBUGGING
+════════════════════════════════════════════════════════════════
+
+PROBLEM: Too many popup issues, hard to track what's happening
+
+NEW SOLUTION: Write debug info to LOG FILE instead!
+
+════════════════════════════════════════════════════════════════
+
+RUN THIS:
+
+    TEST_WITH_LOG_FILE.bat
+
+════════════════════════════════════════════════════════════════
+
+WHAT IT DOES:
+
+1. Deletes old log file
+2. Rebuilds the app
+3. Starts the app
+4. Creates: DEBUG_LOG.txt on your DESKTOP
+
+════════════════════════════════════════════════════════════════
+
+HOW TO TEST:
+
+1. Run TEST_WITH_LOG_FILE.bat
+2. App starts → see startup popup
+3. Go to Step 2 → Click "+ Add Single Product"
+4. You'll see TWO popups:
+   - "DEBUG LOG CREATED!" 
+   - "CONSTRUCTOR CALLED!"
+5. Dialog opens → Check what enable shows
+6. CLOSE the app
+7. Go to Desktop → Open DEBUG_LOG.txt
+8. COPY ALL contents and show me!
+
+════════════════════════════════════════════════════════════════
+
+WHAT THE LOG WILL SHOW:
+
+=== 10:30:15.123 === BUTTON CLICKED!
+Creating AddPackageDialog...
+>>> CONSTRUCTOR CALLED! Compiled: 11/12/2025 10:30:10
+Found 2 existing attributes:
+  enable = TRUE
+  other = value
+🔧 Found 'enable' with value 'TRUE' - NOW CHANGING TO FALSE
+✅ Added enable to collection with Value = 'FALSE' (should be FALSE)
+🎯 FINAL CHECK: enable value in collection = 'FALSE'
+   If dialog shows TRUE, something changes it AFTER this point!
+
+════════════════════════════════════════════════════════════════
+
+This log will tell us:
+  ✓ If the new code is running (constructor timestamp)
+  ✓ What value enable starts with
+  ✓ When we change it to FALSE
+  ✓ What value it has before showing the dialog
+
+If the log says FALSE but dialog shows TRUE:
+  → Problem is in the XAML data binding!
+
+════════════════════════════════════════════════════════════════
+

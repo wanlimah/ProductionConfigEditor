@@ -1,0 +1,65 @@
+================================================================================
+QUICK FIX SUMMARY - 183 Records Issue
+Date: October 31, 2025
+================================================================================
+
+PROBLEM:
+--------
+Export data was stuck at 183 records, missing many valid entries.
+
+ROOT CAUSE:
+-----------
+Parser was skipping rows if EITHER Model OR Serial Number was empty.
+This was too strict and excluded valid records.
+
+FIX APPLIED:
+------------
+✅ Changed skip logic from OR to AND
+✅ Now only skips rows where BOTH Model AND Serial Number are empty
+✅ Rows with at least ONE valid field are now included
+
+RESULT:
+-------
+✅ More records will be exported
+✅ Should see full dataset (not limited to 183)
+✅ All existing features preserved
+✅ Data still starts from Column B
+
+HOW TO USE:
+-----------
+1. Run the application (RUN_APP.bat or the .exe)
+2. Click "Parse Files"
+3. Check the record count (should be more than 183 now)
+4. Click "Export to Excel"
+5. Done!
+
+FILE MODIFIED:
+--------------
+CalibrationLogConverter\Parsers\BroadcomParser.cs (lines 106-119)
+
+BUILD STATUS:
+-------------
+✅ Build successful - no errors
+✅ Executable updated and ready to use
+
+NEXT STEPS:
+-----------
+☐ Test with your calibration files
+☐ Verify record count increases
+☐ Confirm all data exports correctly
+
+================================================================================
+STATUS: ✅ FIXED, BUILT, AND READY TO USE
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+

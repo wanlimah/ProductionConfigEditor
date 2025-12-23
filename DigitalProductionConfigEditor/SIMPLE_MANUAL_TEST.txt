@@ -1,0 +1,58 @@
+════════════════════════════════════════════════════════════════
+              🎯 SIMPLE MANUAL TEST - DO THIS
+════════════════════════════════════════════════════════════════
+
+Something very unusual is happening. Let's take a different approach.
+
+Let me ask some questions to understand what's happening:
+
+════════════════════════════════════════════════════════════════
+
+QUESTION 1: When you see the startup popup "DEBUG VERSION LOADED!"
+            What is the BUILD TIME shown?
+
+            Example: "Build Time: 11/12/2025 09:07:32"
+
+════════════════════════════════════════════════════════════════
+
+QUESTION 2: After you see the startup popup, when you click 
+            "+ Add Single Product", do you see:
+
+            A) The Add Package dialog opens immediately (no popups)
+            B) Nothing happens
+            C) Error message
+            D) Other
+
+════════════════════════════════════════════════════════════════
+
+QUESTION 3: In the Add Package dialog that opens, what do you see
+            for the "enable" attribute?
+
+            A) enable: TRUE (dropdown)
+            B) enable: FALSE (dropdown)  
+            C) No enable field at all
+            D) enable: (empty/blank)
+
+════════════════════════════════════════════════════════════════
+
+QUESTION 4: Are you clicking on:
+            - The app window that just opened from the batch file?
+            - OR clicking a shortcut/taskbar icon?
+
+════════════════════════════════════════════════════════════════
+
+ALTERNATE APPROACH:
+
+Maybe the MessageBox.Show calls are being suppressed by Windows
+or your security software?
+
+Let's try a DIFFERENT debug method - write to a log file instead
+of showing popups!
+
+Would you like me to:
+  → Change debug from MessageBox popups to LOG FILE?
+  
+This way we can see what's happening even if popups are blocked!
+
+════════════════════════════════════════════════════════════════
+

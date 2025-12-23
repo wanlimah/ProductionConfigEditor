@@ -1,0 +1,106 @@
+===============================================================================
+HOW TO CONVERT YOUR WEBP IMAGE TO ICO FORMAT
+===============================================================================
+
+Your XML icon image is located at:
+C:\Users\wanlimah\DigitalProductionConfigEditor\DigitalProductionConfigEditor\bin\OIP.webp
+
+TARGET LOCATION FOR ICO FILE:
+C:\Users\wanlimah\DigitalProductionConfigEditor\DigitalProductionConfigEditor\app_icon.ico
+
+===============================================================================
+OPTION 1: Using Online Converter (EASIEST & RECOMMENDED)
+===============================================================================
+
+1. Go to: https://convertico.com/
+
+2. Click "Drop your files here, or click to select them manually!"
+
+3. Navigate to and select: C:\Users\wanlimah\DigitalProductionConfigEditor\DigitalProductionConfigEditor\bin\OIP.webp
+
+4. The website will automatically convert it
+
+5. Click "Download" to save the ICO file
+
+6. Save it as: app_icon.ico
+
+7. Move the downloaded app_icon.ico to:
+   C:\Users\wanlimah\DigitalProductionConfigEditor\DigitalProductionConfigEditor\
+
+8. Rebuild your project: dotnet build
+
+9. Done! Your application will now have the XML icon.
+
+===============================================================================
+OPTION 2: Using Paint + Online Converter
+===============================================================================
+
+1. Open Microsoft Edge browser
+
+2. Navigate to the OIP.webp file location
+
+3. Drag the WEBP file into Edge browser
+
+4. Right-click on the image and "Save image as..."
+
+5. Save as PNG format
+
+6. Go to https://convertico.com/
+
+7. Upload the PNG file
+
+8. Download the ICO file and save as app_icon.ico
+
+9. Place it in: C:\Users\wanlimah\DigitalProductionConfigEditor\DigitalProductionConfigEditor\
+
+10. Rebuild: dotnet build
+
+===============================================================================
+AFTER CONVERSION:
+===============================================================================
+
+Once you've placed app_icon.ico in the correct location, simply run:
+
+    cd DigitalProductionConfigEditor
+    dotnet build
+
+The icon is already configured in the project file and will be automatically
+embedded into your application executable.
+
+===============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

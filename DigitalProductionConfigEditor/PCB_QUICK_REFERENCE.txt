@@ -1,0 +1,144 @@
+================================================================================
+PCB FORMAT CONFIG - QUICK REFERENCE CARD
+================================================================================
+
+🔲 ONE PCB CONFIG = MANY ISLANDS (PRODUCTS)
+
+================================================================================
+THE GOLDEN RULE
+================================================================================
+
+  ⚠️  Add PCB Config ONCE, Edit to add islands!
+
+  ❌ WRONG: Adding new PCB for each product
+  ✅ RIGHT: Edit existing PCB to add islands
+
+================================================================================
+WORKFLOW 1: ADDING PCB (First Time Only)
+================================================================================
+
+  When:  Creating a new XML file
+  
+  Steps:
+  1. Go to Step 1
+  2. Scroll to "🔲 PCB Format Config" (left panel)
+  3. Click "➕ Add PCB Format Config"
+  4. PCB appears in right panel
+  
+  ⚠️  DO THIS ONLY ONCE PER XML FILE!
+
+================================================================================
+WORKFLOW 2: EDITING PCB (Most Common)
+================================================================================
+
+  When:  Adding/modifying products
+  
+  Steps:
+  1. Find "PCB Format Config" (right panel)
+  2. Click "✏ Edit" button
+  3. In dialog:
+     • ➕ Add Island = New product
+     • Edit values = Modify product
+     • 🗑 Delete = Remove product
+  4. Click "💾 Save" IN THE DIALOG
+  5. Click "💾 Save XML" IN MAIN WINDOW
+  
+  ⚠️  TWO SAVES REQUIRED:
+     1️⃣  Save in dialog = Apply changes
+     2️⃣  Save XML = Write to file!
+  
+  ✅ USE THIS FOR MOST WORK!
+
+================================================================================
+UNDERSTANDING ISLANDS
+================================================================================
+
+  Island = Product/PCB variant
+  
+  Each island has:
+  - ID: 1, 2, 3, etc.
+  - Strip Unit Count: X, Y
+  - Panel Strip Count: X, Y
+  
+  Example:
+    Product A → Island 1
+    Product B → Island 2
+    Product C → Island 3
+  
+  All in ONE PCB Config!
+
+================================================================================
+DECISION TREE
+================================================================================
+
+  Is PCB Config in right panel?
+    │
+    ├─ NO  → Use Workflow 1 (Add PCB)
+    │
+    └─ YES → Use Workflow 2 (Edit PCB)
+            │
+            ├─ New product?    → Add Island
+            ├─ Modify product? → Edit Island
+            └─ Remove product? → Delete Island
+
+================================================================================
+COMMON MISTAKES TO AVOID
+================================================================================
+
+  ❌ Clicking "➕ Add PCB Format Config" for each product
+  ❌ Creating multiple PCB configs
+  ❌ Confusing PCB with Product
+  
+  ✅ One PCB, many islands
+  ✅ Use Edit button for products
+  ✅ Island = Product
+
+================================================================================
+NEED HELP?
+================================================================================
+
+  • Click "❓ Help" button anytime
+  • Read red warnings in UI
+  • Check orange tip boxes
+  • Hover for tooltips
+
+================================================================================
+XML STRUCTURE (CORRECT)
+================================================================================
+
+  <PcbFormatConfig>                    ← ONE CONFIG
+    <Island id="1">                    ← Product A
+      <StripUnitCount x="50" y="17" />
+      <PanelStripCount x="2" y="4" />
+    </Island>
+    <Island id="2">                    ← Product B
+      <StripUnitCount x="52" y="17" />
+      <PanelStripCount x="2" y="4" />
+    </Island>
+    <Island id="3">                    ← Product C
+      <StripUnitCount x="48" y="16" />
+      <PanelStripCount x="3" y="4" />
+    </Island>
+  </PcbFormatConfig>
+
+================================================================================
+REMEMBER
+================================================================================
+
+  1 XML file = 1 PCB Config = Many Islands (Products)
+  
+  Add PCB → ONCE
+  Edit PCB → MANY TIMES
+  Save in Dialog → Apply changes
+  Save XML → Write to file!
+  
+  Different products = Different islands, NOT different PCBs!
+  
+  ⚠️  Don't forget: Click "💾 Save XML" to save to file!
+
+================================================================================
+
+Print this card and keep it handy! 📋
+
+================================================================================
+

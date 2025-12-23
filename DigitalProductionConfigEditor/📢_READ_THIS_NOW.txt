@@ -1,0 +1,62 @@
+════════════════════════════════════════════════════════════════
+                    📢 IMPORTANT - READ THIS
+════════════════════════════════════════════════════════════════
+
+PROBLEM: Still seeing old code even after rebuilding
+
+SOLUTION: I've added a DEBUG popup that shows IMMEDIATELY when 
+          the app starts (before you click anything!)
+
+════════════════════════════════════════════════════════════════
+
+RUN THIS FILE:
+
+    ⚡RUN_THIS_NOW.bat
+
+This will rebuild and start the app with a DEBUG popup.
+
+════════════════════════════════════════════════════════════════
+
+WHAT YOU SHOULD SEE:
+
+✅ CORRECT: When app starts, you see a popup:
+   "🔍 DEBUG VERSION LOADED!"
+   "Build Time: 11/12/2025 09:XX:XX"
+   
+   This confirms you're running NEW code!
+   
+   THEN: Go to Step 2, click "+ Add Single Product"
+         You'll see MORE debug popups showing the enable value!
+
+────────────────────────────────────────────────────────────────
+
+❌ WRONG: No popup when app starts
+   
+   This means old code is still running.
+   
+   SOLUTION: 
+   1. Close the app completely
+   2. RESTART YOUR COMPUTER
+   3. Run ⚡RUN_THIS_NOW.bat again
+   
+   Windows sometimes caches DLLs so aggressively that only
+   a reboot clears them.
+
+════════════════════════════════════════════════════════════════
+
+ALTERNATIVE (if above doesn't work):
+
+Run: NUCLEAR_REBUILD.bat
+     (Even more aggressive, clears VS cache too)
+
+════════════════════════════════════════════════════════════════
+
+The popup will appear IMMEDIATELY when the app window opens.
+You don't need to click anything.
+
+If you see the startup popup, we know new code is running!
+Then the "+ Add Single Product" debug popups will work too!
+
+════════════════════════════════════════════════════════════════
+
+

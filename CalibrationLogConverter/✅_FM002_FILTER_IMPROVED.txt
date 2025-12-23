@@ -1,0 +1,176 @@
+═══════════════════════════════════════════════════════════════════
+✅ FM-002 PARSER - IMPROVED FILTER FIX!
+═══════════════════════════════════════════════════════════════════
+
+Improved filtering to ensure "Company Confidential" and header rows
+are DEFINITELY skipped and NOT exported.
+
+═══════════════════════════════════════════════════════════════════
+WHAT WAS IMPROVED
+═══════════════════════════════════════════════════════════════════
+
+✅ SIMPLIFIED Page Break Detection
+   Before: Required 8+ empty cells
+   After: ANY cell containing "Company Confidential" → SKIP
+
+✅ GUARANTEED Header Row Skipping
+   When "Model" and "SN" detected in same row → SKIP
+   Row counted as skipped
+   Continue statement ensures it's never processed
+
+✅ EXPLICIT Skip Counting
+   Both header rows and page breaks now increment skippedRows
+   Debug output confirms they're being skipped
+
+═══════════════════════════════════════════════════════════════════
+FILTERING LOGIC (IMPROVED)
+═══════════════════════════════════════════════════════════════════
+
+FOR "ON-SITE UPDATE TEMPLATE" WORKSHEET:
+
+Step 1: Check if row is a HEADER
+   → Contains "Model" AND "SN"?
+   → YES: Detect columns, increment skippedRows, CONTINUE (skip)
+
+Step 2: Check if row is PAGE BREAK
+   → Contains "Company Confidential"?
+   → Contains "Confidential"?
+   → Contains "Page" AND "of"?
+   → YES: Increment skippedRows, set inDataSection=false, CONTINUE (skip)
+
+Step 3: Check if in data section
+   → Not in data section? → CONTINUE (skip)
+   → Columns not detected? → CONTINUE (skip)
+
+Step 4: Process data row
+   → Extract Model, Serial, Status, Cal Date
+   → Skip if empty/invalid
+   → Add to results
+
+═══════════════════════════════════════════════════════════════════
+DEBUG OUTPUT
+═══════════════════════════════════════════════════════════════════
+
+You should now see:
+
+FM002Parser: Found header row at 14, skipping this row
+FM002Parser: Found header row at 107, skipping this row
+FM002Parser: Page break detected at row 106, skipping
+Skipped row 106: (page break)
+Skipped row 107: (header)
+
+Final:
+FM002Parser Summary: Processed=180, Skipped=30, Total=210
+✅ FM-002 PARSER SUCCESS: 180 records extracted
+
+═══════════════════════════════════════════════════════════════════
+KEY CHANGES
+═══════════════════════════════════════════════════════════════════
+
+File: FM002Parser.cs
+
+Change 1: Page Break Detection (Lines 274-296)
+  OLD: Required mostly empty row (8+ empty cells)
+  NEW: ANY cell with "confidential" or "page X of Y" → SKIP
+
+Change 2: Header Row Skipping (Line 270)
+  OLD: Just continued without counting
+  NEW: Increments skippedRows AND continues
+
+Change 3: Debug Messages
+  OLD: "Found header row at X"
+  NEW: "Found header row at X, skipping this row"
+
+═══════════════════════════════════════════════════════════════════
+EXPECTED BEHAVIOR
+═══════════════════════════════════════════════════════════════════
+
+Row 105: PXle-4139 | 1F9169C | 2026-06-23 | PASSED
+  → ✅ EXTRACTED (real data)
+
+Row 106: (empty) | Company Confidential | N/A | PASS
+  → ❌ SKIPPED (page break detected)
+
+Row 107: Model | SN | N/A | STATUS  
+  → ❌ SKIPPED (header detected)
+
+Row 108: PXle-6570 | 1CE7B09 | 2026-06-23 | PASSED
+  → ✅ EXTRACTED (real data)
+
+Result: Clean export with ONLY equipment data!
+
+═══════════════════════════════════════════════════════════════════
+BUILD AND TEST
+═══════════════════════════════════════════════════════════════════
+
+1. Build:
+   cd CalibrationLogConverter\CalibrationLogConverter
+   dotnet build --configuration Release
+
+2. Test:
+   TEST_FM002_PARSER.bat
+
+3. Parse:
+   Click "Parse Files"
+
+4. Check:
+   Look at preview - should see ONLY equipment data
+   No "Company Confidential" rows
+   No "Model/SN" header rows
+
+5. Export:
+   Click "Export to Excel"
+   
+6. Verify:
+   Open exported file
+   Check that it contains ONLY calibration records
+   No junk rows
+
+═══════════════════════════════════════════════════════════════════
+IF STILL SEEING THOSE ROWS
+═══════════════════════════════════════════════════════════════════
+
+If you STILL see "Company Confidential" or "Model" rows after this fix:
+
+1. Make sure you REBUILT the application:
+   dotnet build --configuration Release
+
+2. Make sure you're running the NEW executable:
+   CalibrationLogConverter\bin\Release\net8.0-windows\CalibrationLogConverter.exe
+
+3. Check Debug output (run in Debug mode):
+   Should see "skipping this row" messages
+
+4. Send me the Debug output so I can see what's happening
+
+═══════════════════════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════════════════════
+
+✅ Page break detection simplified (no longer requires 8+ empty cells)
+✅ Header row detection explicitly skips and counts
+✅ Both types of rows now have clear debug messages
+✅ Continue statements ensure rows are never processed
+✅ No linter errors
+
+This should definitely filter out those rows now!
+
+═══════════════════════════════════════════════════════════════════
+
+Date: November 5, 2025
+Version: 1.3.1
+Status: ✅ IMPROVED FILTER FIX APPLIED
+Ready: BUILD AND TEST AGAIN
+
+═══════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,143 @@
+═══════════════════════════════════════════════════════════════════
+✅ FM-002 PARSER - FILTER FIX APPLIED!
+═══════════════════════════════════════════════════════════════════
+
+Added filtering to REMOVE unwanted rows from the export.
+
+═══════════════════════════════════════════════════════════════════
+WHAT WAS FIXED
+═══════════════════════════════════════════════════════════════════
+
+The parser now SKIPS these rows (won't export them):
+
+❌ REMOVED: "Company Confidential" rows (page break markers)
+❌ REMOVED: Repeated header rows ("Model", "SN", "STATUS")
+❌ REMOVED: Empty rows (both Model and Serial empty)
+❌ REMOVED: "X" marker rows (error indicators)
+
+═══════════════════════════════════════════════════════════════════
+EXAMPLE - BEFORE vs AFTER
+═══════════════════════════════════════════════════════════════════
+
+BEFORE (exported with unwanted rows):
+  Row 105: PXle-4139 | 1F9169C | 2026-06-23 | PASSED ✅
+  Row 106: (empty)   | Company Confidential | N/A | PASS ❌ BAD
+  Row 107: Model     | SN      | N/A | STATUS ❌ BAD
+  Row 108: PXle-6570 | 1CE7B09 | 2026-06-23 | PASSED ✅
+
+AFTER (clean export):
+  Row 105: PXle-4139 | 1F9169C | 2026-06-23 | PASSED ✅
+  Row 106: PXle-6570 | 1CE7B09 | 2026-06-23 | PASSED ✅
+  Row 107: PXle-4139 | 1F91676 | 2026-06-23 | PASSED ✅
+  
+Result: Only REAL calibration data exported! ✅
+
+═══════════════════════════════════════════════════════════════════
+FILTERING LOGIC
+═══════════════════════════════════════════════════════════════════
+
+The parser now checks each row and skips if:
+
+1. Model = "X" OR Serial = "X"
+   → Skip (error marker)
+
+2. Model is empty AND Serial is empty
+   → Skip (blank row)
+
+3. Model = "Model" OR Model = "Model Number"
+   → Skip (repeated header)
+
+4. Serial = "SN" OR Serial = "Serial Number"
+   → Skip (repeated header)
+
+5. Model contains "Company Confidential"
+   → Skip (page break)
+
+6. Serial contains "Company Confidential"
+   → Skip (page break)
+
+Only extract rows with REAL equipment data!
+
+═══════════════════════════════════════════════════════════════════
+DEBUG OUTPUT
+═══════════════════════════════════════════════════════════════════
+
+You'll now see messages like:
+
+Skipped row 106: Header or page break text - Model='', Serial='Company Confidential'
+Skipped row 107: Header or page break text - Model='Model', Serial='SN'
+Row 108: Status from file='PASSED' - Model='PXle-6570', Serial='1CE7B09'
+
+This confirms unwanted rows are being filtered out.
+
+═══════════════════════════════════════════════════════════════════
+BUILD STATUS
+═══════════════════════════════════════════════════════════════════
+
+✅ Code:      UPDATED
+✅ Linter:    0 errors
+✅ Status:    READY TO BUILD
+
+Next step: Build the application
+  cd CalibrationLogConverter\CalibrationLogConverter
+  dotnet build --configuration Release
+
+═══════════════════════════════════════════════════════════════════
+EXPECTED RESULTS
+═══════════════════════════════════════════════════════════════════
+
+Your exported Excel file will now be CLEAN:
+
+✅ Only equipment calibration records
+✅ No "Company Confidential" rows
+✅ No repeated "Model/SN" header rows
+✅ No empty rows
+✅ No "X" marker rows
+
+All unwanted rows filtered out automatically!
+
+═══════════════════════════════════════════════════════════════════
+SUMMARY OF ALL FIXES
+═══════════════════════════════════════════════════════════════════
+
+Version 1.0: Initial FM-002 parser created
+Version 1.1: Fixed for "On-site update template" worksheet
+Version 1.2: Multi-section processing (handles page breaks)
+Version 1.3: Filter fix (removes Company Confidential & headers) ← NOW
+
+═══════════════════════════════════════════════════════════════════
+READY TO BUILD AND TEST!
+═══════════════════════════════════════════════════════════════════
+
+Build:
+  cd CalibrationLogConverter\CalibrationLogConverter
+  dotnet build --configuration Release
+
+Test:
+  TEST_FM002_PARSER.bat
+
+Expected:
+  ✅ Clean export with ONLY calibration data
+  ✅ No page break markers
+  ✅ No repeated headers
+  ✅ 150-200+ records from all pages
+
+═══════════════════════════════════════════════════════════════════
+
+Date: November 5, 2025
+Version: 1.3
+Status: ✅ FILTER FIX APPLIED
+Ready: BUILD AND TEST
+
+═══════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+

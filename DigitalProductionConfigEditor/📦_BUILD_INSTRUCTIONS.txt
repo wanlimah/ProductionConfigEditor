@@ -1,0 +1,102 @@
+════════════════════════════════════════════════════════════════
+           📦 HOW TO BUILD RELEASE VERSIONS
+════════════════════════════════════════════════════════════════
+
+You have 2 options to create release builds:
+
+════════════════════════════════════════════════════════════════
+
+OPTION 1: Basic Release Build (folders only)
+───────────────────────────────────────────────────────────────
+
+Run:  BUILD_RELEASE_VERSIONS.bat
+
+This creates:
+  - Release_[date] folder
+  - NET6 subfolder (for .NET 6)
+  - NET8 subfolder (for .NET 8)
+
+Use this if you want to manually package or test locally.
+
+════════════════════════════════════════════════════════════════
+
+OPTION 2: Complete Distribution Package (with ZIP files)
+───────────────────────────────────────────────────────────────
+
+Run:  CREATE_DISTRIBUTION_PACKAGE.bat
+
+This creates:
+  - DigitalProductionConfigEditor_Release_[date] folder
+  - Two subfolders with executables
+  - Two ZIP files ready to distribute
+  - README.txt in each package
+
+✓ RECOMMENDED for distribution to end users!
+
+════════════════════════════════════════════════════════════════
+
+WHAT'S INCLUDED IN EACH BUILD:
+───────────────────────────────────────────────────────────────
+
+✓ DigitalProductionConfigEditor.exe
+✓ All required DLL files
+✓ Master_Digital_ProductionUserConfig.xml
+✓ README.txt (installation & usage guide)
+
+════════════════════════════════════════════════════════════════
+
+KEY FEATURE IN THESE BUILDS:
+───────────────────────────────────────────────────────────────
+
+🔒 Enable=FALSE Default
+
+  When users add configuration nodes or packages,
+  the enable attribute defaults to FALSE for safety.
+  
+  Users manually enable only what they need!
+
+════════════════════════════════════════════════════════════════
+
+TESTING BEFORE DISTRIBUTION:
+───────────────────────────────────────────────────────────────
+
+1. Run CREATE_DISTRIBUTION_PACKAGE.bat
+
+2. Go to the generated folder
+
+3. Test NET6 version:
+   - Extract DigitalProductionConfigEditor_NET6.zip
+   - Run the .exe
+   - Add a configuration node → verify enable=FALSE
+   - Add a package → verify enable=FALSE
+
+4. Test NET8 version:
+   - Extract DigitalProductionConfigEditor_NET8.zip
+   - Run the .exe
+   - Same verification tests
+
+5. If both work correctly → distribute the ZIP files!
+
+════════════════════════════════════════════════════════════════
+
+DISTRIBUTION:
+───────────────────────────────────────────────────────────────
+
+Share these ZIP files with end users:
+  - DigitalProductionConfigEditor_NET6.zip
+  - DigitalProductionConfigEditor_NET8.zip
+
+Users extract and run - no installation needed!
+
+════════════════════════════════════════════════════════════════
+
+NOTES:
+───────────────────────────────────────────────────────────────
+
+• No debug popups in Release builds
+• No DEBUG_LOG.txt created
+• Clean professional UI
+• Optimized performance
+
+════════════════════════════════════════════════════════════════
+

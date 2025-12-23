@@ -1,0 +1,167 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║          ✅ STATUS COLUMN & N/A FIX APPLIED - READY TO REBUILD!              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Date: November 5, 2025
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT'S NEW                                                                   ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+✅ Status Column Added (Column E)
+   Shows "PASS" or "FAIL" for each calibration
+   - PASS: Normal text
+   - FAIL: Red, Bold (easy to spot!)
+
+✅ Due Date Shows "N/A" When Blank
+   Instead of empty cells, blank due dates now show "N/A"
+
+✅ Failed Calibrations Now Included
+   Rows with "X" markers are no longer skipped
+   They're included in the export with "FAIL" status
+
+✅ Summary Statistics Enhanced
+   Shows PASS count (green) and FAIL count (red)
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ NEW EXPORT FORMAT                                                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Column A: (Empty)
+Column B: Model
+Column C: Serial Number
+Column D: Due Date (shows "N/A" if blank)
+Column E: Status (PASS or FAIL) ← NEW!
+
+Example Data:
+─────────────
+Model      | Serial Number | Due Date    | Status
+-----------|---------------|-------------|--------
+M9803A     | MY58101860    | 2026-09-22  | PASS
+X          | MY123456      | N/A         | FAIL (red, bold)
+E5071C     | MY46519787    | N/A         | PASS
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ HOW TO REBUILD                                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+STEP 1: CLOSE THE APPLICATION
+──────────────────────────────
+→ Close CalibrationLogConverter if it's running
+→ The exe file must be unlocked for rebuild
+
+STEP 2: REBUILD (PowerShell)
+────────────────────────────
+cd CalibrationLogConverter\CalibrationLogConverter
+dotnet build -c Release
+
+STEP 3: RUN THE APPLICATION
+───────────────────────────
+RUN_APP.bat
+
+STEP 4: TEST YOUR FILE
+──────────────────────
+→ Load: Logsheet_Broadcom_Sep25_WanLing (version 1).xlsb
+→ Click "Parse Files"
+→ Click "Export to Excel"
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ WHAT TO VERIFY                                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+In the Exported Excel File:
+───────────────────────────
+☐ Column E exists with "Status" header
+☐ Status shows "PASS" or "FAIL" for each row
+☐ FAIL status appears in red, bold text
+☐ Blank due dates show "N/A" instead of empty
+☐ Failed calibrations (X markers) are included
+
+In the Summary Sheet:
+─────────────────────
+☐ Shows "Calibration Status:" section
+☐ Shows PASS count in green
+☐ Shows FAIL count in red (if any failures)
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ KEY CHANGES                                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Status Detection:
+─────────────────
+IF Model = "X" OR Serial Number = "X"
+  THEN Status = "FAIL"
+  ELSE Status = "PASS"
+
+Due Date Display:
+─────────────────
+IF Due Date exists
+  THEN Show formatted date (yyyy-MM-dd)
+  ELSE Show "N/A"
+
+Failed Records:
+───────────────
+BEFORE: Skipped (not in export)
+AFTER:  Included with FAIL status
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ FILES MODIFIED                                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+1. BroadcomParser.cs
+   ─────────────────
+   • Added status detection logic (PASS/FAIL)
+   • Removed skipping of "X" marker rows
+   • Now includes failed calibrations in export
+
+2. ExcelExportService.cs
+   ──────────────────────
+   • Added Status column header (Column E)
+   • Show "N/A" for blank due dates
+   • Highlight FAIL status in red, bold
+   • Added PASS/FAIL statistics to Summary sheet
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ BENEFITS                                                                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+✅ Complete Data
+   All calibrations included, even failures
+
+✅ Clear Status
+   Easy to see which calibrations passed or failed
+
+✅ No Empty Cells
+   "N/A" clearly indicates missing due dates
+
+✅ Visual Highlighting
+   Red, bold FAIL status is easy to spot
+
+✅ Better Reporting
+   Summary shows PASS/FAIL statistics
+
+════════════════════════════════════════════════════════════════════════════════
+
+📋 READY TO REBUILD!
+
+1. Close the application
+2. Run: dotnet build -c Release
+3. Test with your file
+4. Verify Status column and N/A values
+
+════════════════════════════════════════════════════════════════════════════════
+
+For detailed documentation, see: STATUS_COLUMN_AND_NA_FIX.md
+
+════════════════════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
+

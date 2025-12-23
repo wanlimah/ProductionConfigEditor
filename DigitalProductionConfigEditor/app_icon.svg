@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Background -->
+  <rect width="256" height="256" fill="#2C5AA0" rx="20"/>
+  
+  <!-- XML Brackets - Left -->
+  <path d="M 70 80 L 50 80 L 50 176 L 70 176" 
+        stroke="#FFD700" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- XML Brackets - Right -->
+  <path d="M 186 80 L 206 80 L 206 176 L 186 176" 
+        stroke="#FFD700" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Forward Slash -->
+  <line x1="110" y1="160" x2="146" y2="96" 
+        stroke="#FFD700" 
+        stroke-width="12" 
+        stroke-linecap="round"/>
+  
+  <!-- Center Lines (representing XML structure) -->
+  <line x1="90" y1="110" x2="166" y2="110" 
+        stroke="#FFFFFF" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        opacity="0.8"/>
+  <line x1="90" y1="128" x2="166" y2="128" 
+        stroke="#FFFFFF" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        opacity="0.8"/>
+  <line x1="90" y1="146" x2="140" y2="146" 
+        stroke="#FFFFFF" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        opacity="0.8"/>
+  
+  <!-- Highlight decoration -->
+  <circle cx="206" cy="50" r="8" fill="#90EE90" opacity="0.8"/>
+</svg>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
