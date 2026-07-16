@@ -96,11 +96,8 @@ namespace DigitalProductionConfigEditor.Views
             var existingAttributes = GetAttributesFromExistingPackages();
             bool hasExistingPackages = existingAttributes.Count > 0;
 
-            // Show/hide power suffix based on whether packages exist
             if (hasExistingPackages)
             {
-                AddPowerSuffixCheckBox.Visibility = Visibility.Visible;
-                
                 // Store attribute keys for later use
                 _attributeKeys = existingAttributes.Keys.ToList();
                 
@@ -112,8 +109,6 @@ namespace DigitalProductionConfigEditor.Views
             }
             else
             {
-                AddPowerSuffixCheckBox.Visibility = Visibility.Collapsed;
-                
                 // Use default attribute
                 _attributeKeys.Add("enable");
                 _dropdownOptions["enable"] = new List<string> { "TRUE", "FALSE" };
@@ -124,38 +119,52 @@ namespace DigitalProductionConfigEditor.Views
         {
             var attributeTemplate = new Dictionary<string, string>();
 
-            if (_viewModel.SelectedConfigurationNode != null)
+            // 1. Try the user's new XML node first
+            var firstPackage = FindFirstPackage(_viewModel.SelectedConfigurationNode);
+
+            // 2. If no packages exist yet, fall back to the master XML's equivalent node
+            if (firstPackage == null && _viewModel.SelectedConfigurationName != "None")
             {
-                var packages = _viewModel.SelectedConfigurationNode.SelectNodes("Package");
-                if (packages != null && packages.Count > 0)
+                var masterNode = _viewModel.MasterXmlDocument?
+                    .SelectSingleNode($"//ProductionUserConfigs/{_viewModel.SelectedConfigurationName}");
+                firstPackage = FindFirstPackage(masterNode);
+            }
+
+            if (firstPackage?.Attributes != null)
+            {
+                foreach (XmlAttribute attr in firstPackage.Attributes)
                 {
-                    var firstPackage = packages[0];
-                    if (firstPackage?.Attributes != null)
-                    {
-                        foreach (XmlAttribute attr in firstPackage.Attributes)
-                        {
-                            if (!attr.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
-                            {
-                                attributeTemplate[attr.Name] = attr.Value;
-                            }
-                        }
-                    }
+                    if (!attr.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
+                        attributeTemplate[attr.Name] = attr.Value;
                 }
             }
 
             return attributeTemplate;
         }
 
+        private static XmlNode? FindFirstPackage(XmlNode? configNode)
+        {
+            if (configNode == null) return null;
+            var packages = configNode.SelectNodes("Package");
+            return (packages != null && packages.Count > 0) ? packages[0] : null;
+        }
+
         private List<string>? GetDropdownOptionsForAttribute(string attributeName)
         {
+            // Generate all valid Sublot values: 1A-1E, 2A-2E, 3A-3E
+            var sublotOptions = Enumerable.Range(1, 3)
+                .SelectMany(n => new[] { "A", "B", "C", "D", "E" }.Select(l => $"{n}{l}"))
+                .ToList();
+
             // Define default dropdown options for specific attributes
             var dropdownMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                { "enable", new List<string> { "TRUE", "FALSE" } },
-                { "viewer", new List<string> { "true", "false" } },
-                { "mode", new List<string> { "AUTO", "MANUAL", "SWEEP", "POINT" } },
-                { "rule", new List<string> { "DATETIME", "REV" } },
-                { "avg_channel", new List<string> { "ALL", "EACH" } }
+                { "enable",      new List<string> { "FALSE", "TRUE" } },
+                { "viewer",      new List<string> { "true", "false" } },
+                { "mode",        new List<string> { "AUTO", "MANUAL", "SWEEP", "POINT" } },
+                { "rule",        new List<string> { "DATETIME", "REV" } },
+                { "avg_channel", new List<string> { "ALL", "EACH" } },
+                { "Sublot",      sublotOptions }
             };
 
             // Try to get options from the master XML configuration node
@@ -228,12 +237,6 @@ namespace DigitalProductionConfigEditor.Views
             // Remove duplicates
             productNames = productNames.Distinct().ToList();
 
-            // Apply power suffix if checked
-            if (AddPowerSuffixCheckBox.IsChecked == true)
-            {
-                productNames = productNames.Select(name => $"{name}-POWER").ToList();
-            }
-
             if (productNames.Count == 0)
             {
                 MessageBox.Show("No valid product names found.", 
@@ -299,6 +302,16 @@ namespace DigitalProductionConfigEditor.Views
                         Width = new DataGridLength(100),
                         IsReadOnly = false
                     };
+
+                    if (PackageNumericAttributes.IsNonNegativeInteger(attrKey))
+                    {
+                        var editingStyle = new Style(typeof(TextBox));
+                        editingStyle.Setters.Add(new EventSetter(TextBox.PreviewTextInputEvent,
+                            new TextCompositionEventHandler(NumericAttributeCell_PreviewTextInput)));
+                        editingStyle.Setters.Add(new EventSetter(DataObject.PastingEvent,
+                            new DataObjectPastingEventHandler(NumericAttributeCell_Pasting)));
+                        textColumn.EditingElementStyle = editingStyle;
+                    }
                     
                     // Style regular column headers
                     var headerStyle = new Style(typeof(DataGridColumnHeader));
@@ -434,6 +447,21 @@ namespace DigitalProductionConfigEditor.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private static void NumericAttributeCell_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
+        }
+
+        private static void NumericAttributeCell_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (!e.DataObject.GetDataPresent(DataFormats.Text))
+                return;
+
+            var text = e.DataObject.GetData(DataFormats.Text) as string ?? "";
+            if (!Regex.IsMatch(text, "^[0-9]*$"))
+                e.CancelCommand();
         }
     }
 }

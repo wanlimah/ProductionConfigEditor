@@ -72,13 +72,6 @@
                     </StackPanel>
                     
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <!-- Power Suffix Option (Only shown when packages exist) -->
-                        <CheckBox x:Name="AddPowerSuffixCheckBox"
-                                  Content="Add Power Suffix&#x0a;(-POWER)"
-                                  FontWeight="SemiBold"
-                                  ToolTip="Append -POWER to all products"
-                                  Margin="0,0,0,10"
-                                  Visibility="Collapsed"/>
                         
                         <Button Content="⚡ Generate Grid" 
                                 Width="120" Height="35"
@@ -165,11 +158,11 @@
                 <TextBlock Text="💡 How to Use:" FontWeight="Bold" Margin="0,0,0,5"/>
                 <TextBlock TextWrapping="Wrap" FontSize="11">
                     1. Enter product names in the text box (one per line) - names auto-convert to UPPERCASE<LineBreak/>
-                    2. Check "Add Power Suffix" if needed (appends -POWER to all products)<LineBreak/>
-                    3. Click "Generate Grid" to create the editable table<LineBreak/>
-                    4. Edit attributes for each product individually in the grid<LineBreak/>
-                    5. Dropdown columns (light blue header with ▼) allow selection from list<LineBreak/>
-                    6. Delete unwanted rows using Delete key or right-click menu<LineBreak/>
+                    2. Click "Generate Grid" to create the editable table<LineBreak/>
+                    3. Edit attributes for each product individually in the grid<LineBreak/>
+                    4. Dropdown columns (light blue header with ▼) allow selection from list<LineBreak/>
+                    5. Delete unwanted rows using Delete key or right-click menu<LineBreak/>
+                    6. Integer columns (e.g. count, minUnitsBeforeTrigger, minPassedYieldTrigger) accept digits only<LineBreak/>
                     7. Click "Add All Products" to create all packages at once
                 </TextBlock>
             </StackPanel>

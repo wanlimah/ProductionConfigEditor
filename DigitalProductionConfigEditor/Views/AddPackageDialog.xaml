@@ -57,31 +57,24 @@
                              ToolTip="Enter the product part number (will be auto-converted to UPPERCASE)"/>
                 </Grid>
 
-                <!-- Optional Power Suffix -->
-                <Grid Margin="0,10">
+                <!-- Preview -->
+                <Grid Margin="0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     
-                    <CheckBox Grid.Column="0" 
-                              x:Name="AddPowerSuffixCheckBox"
-                              Content="Add Power Suffix"
-                              VerticalAlignment="Center"
-                              ToolTip="Add -POWER suffix to the package name"
-                              Checked="PowerSuffix_Changed"
-                              Unchecked="PowerSuffix_Changed"/>
+                    <TextBlock Grid.Column="0" 
+                               Text="Result:" 
+                               VerticalAlignment="Center"
+                               FontWeight="SemiBold"/>
                     
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="Result: " 
-                                   VerticalAlignment="Center" 
-                                   Margin="0,0,5,0"/>
-                        <TextBlock x:Name="PreviewNameTextBlock" 
-                                   Text=""
-                                   FontWeight="Bold" 
-                                   Foreground="DarkBlue"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <TextBlock Grid.Column="1" 
+                               x:Name="PreviewNameTextBlock" 
+                               Text=""
+                               FontWeight="Bold" 
+                               Foreground="DarkBlue"
+                               VerticalAlignment="Center"/>
                 </Grid>
 
                 <!-- Fixed Attributes List (Edit Only) -->
@@ -107,6 +100,7 @@
                                 <TextBox Grid.Column="1" 
                                          Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          PreviewTextInput="NumericField_PreviewTextInput"
+                                         DataObject.Pasting="NumericField_Pasting"
                                          Tag="{Binding Key}">
                                     <TextBox.Style>
                                         <Style TargetType="TextBox">
@@ -154,11 +148,10 @@
                         <TextBlock Text="💡 Tips:" FontWeight="Bold" Margin="0,0,0,5"/>
                         <TextBlock TextWrapping="Wrap">
                             • Package Name is required (auto-converted to UPPERCASE)<LineBreak/>
-                            • Check "Add Power Suffix" to append "-RF1-POWER" to the name<LineBreak/>
-                            • Example: afem-8266 becomes AFEM-8266-AP1-RF1-QA-RF1-POWER<LineBreak/>
-                            • Numeric fields (count, sampling, threshold, x, y) only accept integers<LineBreak/>
+                            • Numeric fields (count, sampling, threshold, x, y, minUnitsBeforeTrigger, minPassedYieldTrigger) only accept non-negative integers (no decimals)<LineBreak/>
                             • Attributes are copied from existing packages (you can edit the values)<LineBreak/>
-                            • Values for 'enable' are usually TRUE or FALSE
+                            • Values for 'enable' are usually TRUE or FALSE<LineBreak/>
+                            • Sublot dropdown: 1A–1E, 2A–2E, 3A–3E, 4A–4E, 5A–5E
                         </TextBlock>
                     </StackPanel>
                 </Border>

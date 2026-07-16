@@ -194,7 +194,8 @@
                                     <!-- Attribute Value Editor -->
                                     <StackPanel Grid.Column="1">
                                         <!-- TextBox for fields without options -->
-                                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 CharacterCasing="Upper"
                                                  MinWidth="200">
                                             <TextBox.Style>
                                                 <Style TargetType="TextBox">

@@ -1,4 +1,4 @@
-﻿    <Window x:Class="DigitalProductionConfigEditor.MainWindow"
+    <Window x:Class="DigitalProductionConfigEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:DigitalProductionConfigEditor.ViewModels"
@@ -46,7 +46,7 @@
                     </StackPanel>
 
                     <TextBlock Grid.Column="1" 
-                               Text="v1.1.0" 
+                               Text="v1.2.0" 
                                FontSize="12" 
                                Foreground="White" 
                                Opacity="0.8" 

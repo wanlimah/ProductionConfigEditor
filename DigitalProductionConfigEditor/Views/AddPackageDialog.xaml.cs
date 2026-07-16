@@ -114,44 +114,55 @@ namespace DigitalProductionConfigEditor.Views
         private Dictionary<string, string> GetAttributesFromExistingPackages()
         {
             var attributeTemplate = new Dictionary<string, string>();
-            
-            if (_viewModel.SelectedConfigurationNode != null)
+
+            // 1. Try the user's new XML node first
+            var firstPackage = FindFirstPackage(_viewModel.SelectedConfigurationNode);
+
+            // 2. If no packages exist yet, fall back to the master XML's equivalent node
+            if (firstPackage == null && _viewModel.SelectedConfigurationName != "None")
             {
-                var packages = _viewModel.SelectedConfigurationNode.SelectNodes("Package");
-                if (packages != null && packages.Count > 0)
+                var masterNode = _viewModel.MasterXmlDocument?
+                    .SelectSingleNode($"//ProductionUserConfigs/{_viewModel.SelectedConfigurationName}");
+                firstPackage = FindFirstPackage(masterNode);
+            }
+
+            if (firstPackage?.Attributes != null)
+            {
+                foreach (System.Xml.XmlAttribute attr in firstPackage.Attributes)
                 {
-                    // Get attributes from the first package as template
-                    var firstPackage = packages[0];
-                    if (firstPackage?.Attributes != null)
-                    {
-                        foreach (System.Xml.XmlAttribute attr in firstPackage.Attributes)
-                        {
-                            // Skip 'name' as it's entered separately
-                            if (!attr.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
-                            {
-                                // Use the attribute with a default/empty value
-                                attributeTemplate[attr.Name] = attr.Value;
-                            }
-                        }
-                    }
+                    if (!attr.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
+                        attributeTemplate[attr.Name] = attr.Value;
                 }
             }
-            
+
             return attributeTemplate;
+        }
+
+        private static System.Xml.XmlNode? FindFirstPackage(System.Xml.XmlNode? configNode)
+        {
+            if (configNode == null) return null;
+            var packages = configNode.SelectNodes("Package");
+            return (packages != null && packages.Count > 0) ? packages[0] : null;
         }
 
         // Add/Remove attribute methods removed - attributes are now fixed based on template
 
         private List<string>? GetDropdownOptionsForAttribute(string attributeName)
         {
+            // Generate all valid Sublot values: 1A-1E, 2A-2E, 3A-3E
+            var sublotOptions = Enumerable.Range(1, 3)
+                .SelectMany(n => new[] { "A", "B", "C", "D", "E" }.Select(l => $"{n}{l}"))
+                .ToList();
+
             // Define dropdown options for specific attributes
             var dropdownMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                { "enable", new List<string> { "FALSE", "TRUE" } },  // FALSE FIRST = default for new packages!
-                { "viewer", new List<string> { "true", "false" } },
-                { "mode", new List<string> { "AUTO", "MANUAL", "SWEEP", "POINT" } },
-                { "rule", new List<string> { "DATETIME", "REV" } },
-                { "avg_channel", new List<string> { "ALL", "EACH" } }
+                { "enable",  new List<string> { "FALSE", "TRUE" } },  // FALSE FIRST = default for new packages!
+                { "viewer",  new List<string> { "true", "false" } },
+                { "mode",    new List<string> { "AUTO", "MANUAL", "SWEEP", "POINT" } },
+                { "rule",    new List<string> { "DATETIME", "REV" } },
+                { "avg_channel", new List<string> { "ALL", "EACH" } },
+                { "Sublot",  sublotOptions }
             };
 
             // Try to get options from the master XML configuration node
@@ -194,11 +205,6 @@ namespace DigitalProductionConfigEditor.Views
             return dropdownMap.ContainsKey(attributeName) ? dropdownMap[attributeName] : null;
         }
 
-        private void PowerSuffix_Changed(object sender, RoutedEventArgs e)
-        {
-            UpdatePackageNamePreview();
-        }
-
         private void UpdatePackageNamePreview()
         {
             var baseName = PackageNameTextBox.Text.Trim();
@@ -225,12 +231,6 @@ namespace DigitalProductionConfigEditor.Views
                 return "";
             }
 
-            // Add power suffix if checkbox is checked
-            if (AddPowerSuffixCheckBox.IsChecked == true)
-            {
-                return $"{baseName}-POWER";
-            }
-            
             return baseName;
         }
 
@@ -305,21 +305,30 @@ namespace DigitalProductionConfigEditor.Views
             }
         }
 
-        // Numeric validation for count, sampling, threshold fields
+        // Numeric validation for integer-only package attributes
         private void NumericField_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (sender is TextBox textBox && textBox.Tag is string attributeName)
             {
-                // Only validate numeric fields
-                var numericFields = new[] { "count", "sampling", "threshold" };
-                
-                if (numericFields.Contains(attributeName.ToLower()))
+                if (PackageNumericAttributes.IsNonNegativeInteger(attributeName))
                 {
-                    // Only allow digits
                     Regex regex = new Regex("[^0-9]+");
                     e.Handled = regex.IsMatch(e.Text);
                 }
             }
+        }
+
+        private void NumericField_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (sender is not TextBox textBox || textBox.Tag is not string attributeName)
+                return;
+            if (!PackageNumericAttributes.IsNonNegativeInteger(attributeName))
+                return;
+            if (!e.DataObject.GetDataPresent(DataFormats.Text))
+                return;
+            var text = e.DataObject.GetData(DataFormats.Text) as string ?? "";
+            if (!Regex.IsMatch(text, "^[0-9]*$"))
+                e.CancelCommand();
         }
     }
 }

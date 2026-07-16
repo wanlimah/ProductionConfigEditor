@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,41 +30,17 @@ namespace DigitalProductionConfigEditor.Views
 
         private void Step1_SelectNode_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadAdvancedSettingsList();
-        }
-
-        private void LoadAdvancedSettingsList()
-        {
+            // Restore developer mode state from ViewModel
             var viewModel = DataContext as WizardViewModel;
-            if (viewModel == null || viewModel.MasterXmlDocument == null) return;
-
-            try
+            if (viewModel != null && viewModel.IsDeveloperModeUnlocked)
             {
-                // Create temporary AdvancedSettingsViewModel to detect non-standard settings
-                var advancedViewModel = new AdvancedSettingsViewModel();
-                advancedViewModel.LoadFromXmlDocument(viewModel.MasterXmlDocument);
-
-                // Get list of setting names
-                var settingNames = new List<string>();
-                if (advancedViewModel.RootNodes != null)
-                {
-                    foreach (var node in advancedViewModel.RootNodes)
-                    {
-                        settingNames.Add(node.DisplayName);
-                    }
-                }
-
-                // Bind to ItemsControl
-                AdvancedSettingsList.ItemsSource = settingNames;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error loading Advanced Settings list: {ex.Message}");
+                DeveloperConfigPanel.Visibility = Visibility.Visible;
+                DeveloperPasswordPanel.Visibility = Visibility.Collapsed;
+                UnlockDeveloperButton.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void OnAddConfigurationClick(object sender, RoutedEventArgs e)
-        {
+        private void OnAddConfigurationClick(object sender, RoutedEventArgs e)        {
             var button = sender as Button;
             var node = button?.Tag as XmlNode;
             var viewModel = DataContext as WizardViewModel;
@@ -72,6 +48,27 @@ namespace DigitalProductionConfigEditor.Views
             if (node != null && viewModel != null)
             {
                 viewModel.CopyConfigurationNodeFromMaster(node);
+            }
+        }
+
+        private void OnOpenDocClick(object sender, RoutedEventArgs e)
+        {
+            var url = (sender as Button)?.Tag as string;
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not open documentation link:\n{ex.Message}",
+                        "Open Doc", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 
@@ -85,10 +82,10 @@ namespace DigitalProductionConfigEditor.Views
             {
                 // Select this configuration node
                 viewModel.SelectedConfigurationNode = node;
-                
+
                 // Navigate to Step 2 to edit packages
                 viewModel.CurrentStep = 2;
-                
+
                 // Trigger UI update by refreshing the parent window
                 var window = Window.GetWindow(this);
                 if (window is MainWindow mainWindow)
@@ -141,10 +138,10 @@ namespace DigitalProductionConfigEditor.Views
             {
                 // Select this configuration node
                 viewModel.SelectedConfigurationNode = node;
-                
+
                 // Navigate to Step 2 to edit packages
                 viewModel.CurrentStep = 2;
-                
+
                 // Trigger UI update by refreshing the parent window
                 var window = Window.GetWindow(this);
                 if (window is MainWindow mainWindow)
@@ -312,16 +309,125 @@ namespace DigitalProductionConfigEditor.Views
             }
         }
 
-        private void OnAdvancedSettingsClick(object sender, RoutedEventArgs e)
+        private void OnAddInputValidationConfigsClick(object sender, RoutedEventArgs e)
         {
-            // Get the MainWindow and call its OnAdvancedSettingsClick handler
-            var window = Window.GetWindow(this);
-            if (window is MainWindow mainWindow)
+            var viewModel = DataContext as WizardViewModel;
+            viewModel?.CopyInputValidationConfigsFromMaster();
+        }
+
+        private void OnEditInputValidationConfigsClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            viewModel?.EditInputValidationConfigs();
+        }
+
+        private void OnDeleteInputValidationConfigsClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            if (viewModel == null) return;
+
+            var result = MessageBox.Show(
+                "Are you sure you want to delete the InputValidationConfigs section?\n\nThis will remove all TestConfig entries.",
+                "Confirm Deletion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
             {
-                // Use reflection to call the private method or trigger it via event
-                var method = typeof(MainWindow).GetMethod("OnAdvancedSettingsClick", 
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                method?.Invoke(mainWindow, new object[] { sender, e });
+                viewModel.DeleteInputValidationConfigs();
+            }
+        }
+
+        private void OnAddDcContactModeClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            viewModel?.CopyDcContactModeSettingOverwriteFromMaster();
+        }
+
+        private void OnEditDcContactModeClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            viewModel?.EditDcContactModeSettingOverwrite();
+        }
+
+        private void OnDeleteDcContactModeClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            if (viewModel == null) return;
+
+            var result = MessageBox.Show(
+                "Are you sure you want to delete the DC_CONTACT_MODE_SETTING_OVERWRITE section?\n\nThis will remove all Pin entries.",
+                "Confirm Deletion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+                viewModel.DeleteDcContactModeSettingOverwrite();
+        }
+
+        private void OnAddMailConfigClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            viewModel?.CopyMailConfigFromMaster();
+        }
+
+        private void OnEditMailConfigClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            viewModel?.EditMailConfig();
+        }
+
+        private void OnDeleteMailConfigClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as WizardViewModel;
+            if (viewModel == null) return;
+
+            var result = MessageBox.Show(
+                "Are you sure you want to delete the MailConfig section?",
+                "Confirm Deletion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+                viewModel.DeleteMailConfig();
+        }
+
+        private void OnUnlockDeveloperClick(object sender, RoutedEventArgs e)
+        {
+            if (DeveloperPasswordPanel.Visibility == Visibility.Visible)
+            {
+                DeveloperPasswordPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                DeveloperPasswordPanel.Visibility = Visibility.Visible;
+                DeveloperPasskeyError.Visibility = Visibility.Collapsed;
+                DeveloperPasskeyBox.Password = "";
+                DeveloperPasskeyBox.Focus();
+            }
+        }
+
+        private void OnVerifyDeveloperPasskeyClick(object sender, RoutedEventArgs e)
+        {
+            // Hardcoded passkey as requested - can be changed here
+            if (DeveloperPasskeyBox.Password == "admin" || DeveloperPasskeyBox.Password == "Dev2024!")
+            {
+                DeveloperConfigPanel.Visibility = Visibility.Visible;
+                DeveloperPasswordPanel.Visibility = Visibility.Collapsed;
+                UnlockDeveloperButton.Visibility = Visibility.Collapsed;
+
+                // Persist state in ViewModel
+                var viewModel = DataContext as WizardViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.IsDeveloperModeUnlocked = true;
+                }
+            }
+            else
+            {
+                DeveloperPasskeyError.Visibility = Visibility.Visible;
+                DeveloperPasskeyBox.SelectAll();
+                DeveloperPasskeyBox.Focus();
             }
         }
     }

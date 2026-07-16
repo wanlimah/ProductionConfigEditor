@@ -401,7 +401,7 @@ namespace DigitalProductionConfigEditor.ViewModels
                         // Skip well-known configurations that are handled elsewhere (e.g., PcbFormatConfig, DeveloperValidationConfig)
                         
                         // List of nodes to exclude from Advanced Settings (handled by main UI or other features)
-                        var excludedNodes = new[] { "PcbFormatConfig", "DeveloperValidationConfig" };
+                        var excludedNodes = new[] { "PcbFormatConfig", "DeveloperValidationConfig", "InputValidationConfigs", "DC_CONTACT_MODE_SETTING_OVERWRITE", "MailConfig" };
                         
                         if (excludedNodes.Contains(child.Name))
                         {

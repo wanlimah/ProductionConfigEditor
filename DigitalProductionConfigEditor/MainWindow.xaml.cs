@@ -999,8 +999,8 @@ namespace DigitalProductionConfigEditor
             {
                 string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 string[] possiblePaths = {
-                    Path.Combine(userProfile, "Box", "Production_Config"),
-                    Path.Combine(userProfile, "Box Sync", "Production_Config")
+                    Path.Combine(userProfile, "Box", "ProductionConfigEditor_Master"),
+                    Path.Combine(userProfile, "Box Sync", "ProductionConfigEditor_Master")
                 };
 
                 foreach (var p in possiblePaths)
@@ -1079,9 +1079,9 @@ namespace DigitalProductionConfigEditor
                         "⚠️ Box Sync Path Not Found\n\n" +
                         "Could not automatically detect your Box folder.\n\n" +
                         "The application looked in:\n" +
-                        $"• {Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Box", "Production_Config")}\n" +
-                        $"• {Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Box Sync", "Production_Config")}\n\n" +
-                        "Please ensure you have created the folder 'Production_Config' inside your Box root folder.",
+                        $"• {Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Box", "ProductionConfigEditor_Master")}\n" +
+                        $"• {Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Box Sync", "ProductionConfigEditor_Master")}\n\n" +
+                        "Please ensure you have created the folder 'ProductionConfigEditor_Master' inside your Box root folder.",
                         "Box Sync Error",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
@@ -1095,7 +1095,7 @@ namespace DigitalProductionConfigEditor
                     Directory.CreateDirectory(boxDir);
                 }
 
-                // Copy Local -> Box
+                // Copy Local -> Box\ProductionConfigEditor_Master (protected developer source)
                 try
                 {
                     // Ensure the destination file is not Read-Only before copying
@@ -1111,6 +1111,47 @@ namespace DigitalProductionConfigEditor
                 catch { /* Ignore attribute errors */ }
 
                 File.Copy(localMasterPath, boxMasterFile, true);
+
+                // ── User distribution: also sync to Box\ProductionConfigEditor ────────────
+                // When the developer runs Edit Master from a non-Box path (e.g. a debug build
+                // in bin\net8.0-windows\), the save goes to that local folder, NOT to the
+                // shared ProductionConfigEditor folder. We copy it there explicitly so that
+                // regular users — who only have access to ProductionConfigEditor — receive
+                // the update via Box cloud sync without needing ProductionConfigEditor_Master access.
+                string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string[] editorFolderCandidates = {
+                    Path.Combine(userProfile, "Box", "ProductionConfigEditor"),
+                    Path.Combine(userProfile, "Box Sync", "ProductionConfigEditor"),
+                };
+
+                string fileName = Path.GetFileName(localMasterPath); // Master_ProductionUserConfig.xml
+                foreach (var candidate in editorFolderCandidates)
+                {
+                    if (Directory.Exists(candidate))
+                    {
+                        string editorTarget = Path.Combine(candidate, fileName);
+                        // Skip if this is already where we just saved from (production path)
+                        if (string.Equals(Path.GetFullPath(localMasterPath),
+                                          Path.GetFullPath(editorTarget),
+                                          StringComparison.OrdinalIgnoreCase))
+                            break;
+
+                        try
+                        {
+                            if (File.Exists(editorTarget) && new FileInfo(editorTarget).IsReadOnly)
+                                new FileInfo(editorTarget).IsReadOnly = false;
+
+                            File.Copy(localMasterPath, editorTarget, true);
+                            System.Diagnostics.Debug.WriteLine($"Also synced to ProductionConfigEditor: {editorTarget}");
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Could not sync to ProductionConfigEditor: {ex.Message}");
+                        }
+                        break;
+                    }
+                }
+                // ─────────────────────────────────────────────────────────────────────────
 
                 MessageBox.Show(
                     "☁️ Master Template Published to Box!\n\n" +
@@ -1657,12 +1698,30 @@ namespace DigitalProductionConfigEditor
                 }
             }
 
+            // Fallback: read directly from Box\ProductionConfigEditor_Master if the local copy is missing.
+            // This covers the case where CheckForBoxUpdate() could not copy the file (e.g. first
+            // install, or the app folder XML was accidentally deleted).
+            string boxSourcePath = GetBoxMasterPath();
+            if (!string.IsNullOrEmpty(boxSourcePath) && System.IO.File.Exists(boxSourcePath))
+            {
+                System.Diagnostics.Debug.WriteLine($"Local XML not found — loading directly from Box source: {boxSourcePath}");
+                MessageBox.Show(
+                    "ℹ️ Master Template loaded from Box\\ProductionConfigEditor_Master\n\n" +
+                    "The local copy was not found. The file has been read directly from the Box source folder.\n\n" +
+                    "This is safe — the app will sync a local copy next time you restart.",
+                    "Loaded from Box Source",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return boxSourcePath;
+            }
+
             // If not found in any standard location, provide detailed error information
             string errorMessage = $"XML file '{fileName}' not found in any of the following locations:\n";
             for (int i = 0; i < searchPaths.Length; i++)
             {
                 errorMessage += $"{i + 1}. {searchPaths[i]}\n";
             }
+            errorMessage += $"\nBox source path checked: {boxSourcePath}";
             errorMessage += $"\nCurrent working directory: {Environment.CurrentDirectory}";
             errorMessage += $"\nApplication base directory: {AppDomain.CurrentDomain.BaseDirectory}";
             errorMessage += $"\nAssembly location: {System.Reflection.Assembly.GetExecutingAssembly().Location}";
